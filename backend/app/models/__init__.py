@@ -1,5 +1,5 @@
 from app.database import Base
-from .user import User
 
+from .user import User
 
 __all__ = ["User", "Base"]
