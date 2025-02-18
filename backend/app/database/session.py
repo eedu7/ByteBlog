@@ -20,3 +20,8 @@ async def get_async_session() -> AsyncIterator[AsyncSession]:
 
 
 Base = declarative_base()
+
+
+async def create_tables():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
