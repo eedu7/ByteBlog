@@ -9,3 +9,10 @@ class UserResponse(BaseModel):
     )
     username: str = Field(..., description="User username", examples=["john.doe"])
     uuid: UUID = Field(..., description="User UUID")
+
+
+class CurrentUser(BaseModel):
+    uuid: UUID | None = Field(None, description="Currently logged user's uuid")
+
+    class Config:
+        validate_assignment = True
