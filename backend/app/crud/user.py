@@ -17,7 +17,7 @@ class UserCRUD(BaseCRUD[User]):
         except Exception as e:
             raise BadRequestException(e)
 
-    async def register(self, email: str, password: str, username: str):
+    async def register(self, email: str, password: str, username: str) -> User:
         user = await self.get_by_email(email)
         if user:
             raise BadRequestException("User already exists")
