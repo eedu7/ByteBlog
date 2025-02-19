@@ -1,3 +1,3 @@
-from .session import Base, create_tables, get_async_session
+from .session import Base, get_async_session
 
-__all__ = ["Base", "get_async_session", "create_tables"]
+__all__ = ["Base", "get_async_session"]
