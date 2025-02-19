@@ -1,10 +1,14 @@
+from typing import Any, Dict
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.config import config
 from app.crud.base import BaseCRUD
 from app.exceptions import (BadRequestException, NotFoundException,
                             UnauthorizedException)
 from app.models import User
-from app.utils import PasswordHandler
+from app.schemas.token import Token
+from app.utils import JWTHandler, PasswordHandler
 
 
 class UserCRUD(BaseCRUD[User]):
@@ -38,4 +42,24 @@ class UserCRUD(BaseCRUD[User]):
         if not PasswordHandler.verify(password, user.password):
             raise UnauthorizedException("Invalid credentials")
 
-        # TODO: Create the JWT token
+        payload = {
+            "uuid": str(user.uuid),
+            "email": user.email,
+            "username": user.username,
+        }
+
+        return self._token(payload)
+
+    def _token(self, payload: Dict[str, Any]) -> Token:
+        access_token = JWTHandler.encode(
+            payload, config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+        )
+        payload.update({"sub": "refresh_token"})
+        refresh_token = JWTHandler.encode(
+            payload, config.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
+        )
+        return Token(
+            access_token=access_token,
+            refresh_token=refresh_token,
+            expires_in=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES,
+        )
