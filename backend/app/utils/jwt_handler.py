@@ -3,6 +3,8 @@ from http import HTTPStatus
 from typing import Any, Dict
 from uuid import uuid4
 
+from jose import ExpiredSignatureError, JWTError, jwt
+
 from app.config import config
 from app.exceptions import CustomException
 
@@ -28,9 +30,17 @@ class JWTHandler:
 
         jti = str(uuid4())
         payload.update({"exp": expire, "jti": jti, "iat": time_of_encoding})
-        # TODO: return the jwt token
+        return jwt.encode(
+            payload, JWTHandler.secret_key, algorithm=JWTHandler.algorithm
+        )
 
     @staticmethod
     def decode(token: str) -> Dict[str, Any]:
-        # # TODO: logic of decoding token
-        pass
+        try:
+            return jwt.decode(
+                token, JWTHandler.secret_key, algorithms=[JWTHandler.algorithm]
+            )
+        except ExpiredSignatureError:
+            raise JWTExpiredError()
+        except JWTError as e:
+            raise JWTDecodeError() from e
