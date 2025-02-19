@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,6 +21,9 @@ class UserCRUD(BaseCRUD[User]):
             return await super().get_by("email", email, unique=True)
         except Exception as e:
             raise BadRequestException(e)
+
+    async def get_by_uuid(self, uuid: UUID) -> User | None:
+        return await super().get_by("uuid", uuid, unique=True)
 
     async def register(self, email: str, password: str, username: str) -> User:
         user = await self.get_by_email(email)
