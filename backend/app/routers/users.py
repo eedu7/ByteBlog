@@ -1,14 +1,11 @@
-from fastapi import APIRouter, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends, status
+
+from app.crud import UserCRUD
+from app.dependencies import get_user_crud
 
 user_router = APIRouter()
 
 
-@user_router.post("/")
-async def register_user():
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            "message": "Register User API",
-        },
-    )
+@user_router.get("/")
+async def register_user(user_crud: UserCRUD = Depends(get_user_crud)):
+    pass
