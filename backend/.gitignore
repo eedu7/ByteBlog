@@ -176,3 +176,6 @@ cython_debug/
 # Docker Volumns
 pgdata/
 postgresql-test/
+
+# Vscpde
+*.vscode/
