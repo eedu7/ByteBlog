@@ -15,7 +15,7 @@ class UserCRUD(BaseCRUD[User]):
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-    async def register_user(self, email: str, password: str, username: str) -> User:
+    async def register(self, email: str, password: str, username: str) -> User:
         user = await self.get_by_email(email)
         if user:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already registered")

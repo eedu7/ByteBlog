@@ -8,4 +8,4 @@ user_router = APIRouter()
 
 @user_router.post("/register", response_model=UserResponse)
 async def register_user(data: RegisterUserRequest, user_crud: UserCRUD = Depends(get_user_crud)):
-    return await user_crud.register_user(**data.model_dump())
+    return await user_crud.register(**data.model_dump())
