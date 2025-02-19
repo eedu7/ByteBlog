@@ -15,7 +15,7 @@ class UserCRUD(BaseCRUD[User]):
         except Exception as e:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-    async def register(self, email: str, password: str, username: str) -> User:
+    async def register(self, email: str, password: str, username: str):
         user = await self.get_by_email(email)
         if user:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already registered")
@@ -27,3 +27,14 @@ class UserCRUD(BaseCRUD[User]):
             "password": hashed_password
         })
         return user
+    
+    async def login(self, email: str, password: str):
+        user = await self.get_by_email(email)
+        
+        if not user:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No user found")
+        
+        if not PasswordHandler.verify(password, user.password):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+        
+        # TODO: Create the JWT token
