@@ -30,7 +30,7 @@ class UserCRUD(BaseCRUD[User]):
         if user:
             raise BadRequestException("User already exists")
 
-        hashed_password = PasswordHandler.hash(password)
+        hashed_password = PasswordHandler.hash_password(password)
 
         user = await super().create(
             {"username": username, "email": email, "password": hashed_password}
@@ -43,7 +43,7 @@ class UserCRUD(BaseCRUD[User]):
         if not user:
             raise NotFoundException("User not found")
 
-        if not PasswordHandler.verify(password, user.password):
+        if not PasswordHandler.verify_password(password, user.password):
             raise UnauthorizedException("Invalid credentials")
 
         payload = {

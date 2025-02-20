@@ -19,3 +19,38 @@ async def test_register_user(client: AsyncClient) -> None:
     assert "email" in response_data["user"]
     assert "uuid" in response_data["user"]
     assert "username" in response_data["user"]
+
+
+@pytest.mark.asyncio
+async def test_register_user_with_existing_email(client: AsyncClient) -> None:
+    fake_user = create_fake_user()
+
+    await client.post("/auth/register", json=fake_user)
+
+    response = await client.post("/auth/register", json=fake_user)
+
+    assert response.status_code == 400
+    assert response.json()["message"] is not None
+
+
+@pytest.mark.asyncio
+async def test_register_user_with_existing_username(client: AsyncClient) -> None:
+    fake_user = create_fake_user()
+
+    await client.post("/auth/register", json=fake_user)
+
+    response = await client.post("/auth/register", json=fake_user)
+
+    assert response.status_code == 400
+    assert response.json()["message"] is not None
+
+
+@pytest.mark.asyncio
+async def test_register_user_with_invalid_email(client: AsyncClient) -> None:
+    fake_user = create_fake_user()
+    fake_user["email"] = "invalid email"
+
+    response = await client.post("/auth/register", json=fake_user)
+
+    assert response.status_code == 422
+    assert response.json()["detail"] is not None
