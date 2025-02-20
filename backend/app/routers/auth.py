@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 
 from app.crud import UserCRUD
 from app.dependencies import get_user_crud
@@ -8,8 +8,9 @@ from app.schemas.auth import (AuthResponse, LoginUserRequest,
 auth_router = APIRouter()
 
 
-# NOTE: Change the response model, to contain JWT token as well as user data
-@auth_router.post("/register", response_model=AuthResponse)
+@auth_router.post(
+    "/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED
+)
 async def register(
     data: RegisterUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
 ):
