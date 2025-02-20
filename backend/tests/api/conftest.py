@@ -17,6 +17,11 @@ def app() -> Generator[FastAPI, Any, None]:
 
 @pytest_asyncio.fixture(scope="function")
 async def client(app: FastAPI, db_session) -> AsyncClient:
+    async def _get_session():
+        return db_session
+
+    app.dependency_overrides[get_async_session] = _get_session
+
     async with AsyncClient(
         transport=ASGITransport(app=app), base_url="http://test"
     ) as ac:
