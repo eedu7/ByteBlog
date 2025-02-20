@@ -3,6 +3,7 @@ from httpx import AsyncClient
 
 from tests.utils.users import create_fake_user
 
+
 @pytest.mark.asyncio
 async def test_register_user(client: AsyncClient) -> None:
     fake_user = create_fake_user()
