@@ -12,13 +12,16 @@ class BaseCRUD(Generic[ModelType]):
     """
     A base class for performing CRUD (Create, Read, Update, Delete) operations asynchronously
     on SQLAlchemy models.
-
-    Args:
-        model (Type[ModelType]): The SQLAlchemy model that the CRUD operations will be performed.
-        session (AsyncSession): The SQLAlchemy asynchronous session used to interact with the database.
     """
 
     def __init__(self, model: Type[ModelType], session: AsyncSession) -> None:
+        """
+        Initializes the BaseCRUD class with the given SQLAlchemy model and session.
+
+        Args:
+            model (Type[ModelType]): The SQLAlchemy model to perform CRUD operations on.
+            session (AsyncSession): The asynchronous SQLAlchemy session used to interact with the database.
+        """
         self.session = session
         self.model = model
 
