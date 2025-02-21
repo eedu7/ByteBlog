@@ -15,6 +15,10 @@ class RegisterUserRequest(LoginUserRequest):
     username: str = Field(..., description="User username", examples=["john.doe"])
 
 
+class LogoutUserRequest(BaseModel):
+    access_token: str = Field(..., description="Access token of the being log out.")
+
+
 class AuthResponse(BaseModel):
     token: Token
     user: UserResponse
