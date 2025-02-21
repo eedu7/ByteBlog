@@ -54,27 +54,29 @@ async def test_register_user_with_invalid_email(client: AsyncClient) -> None:
 
     assert response.status_code == 422
     assert response.json()["detail"] is not None
-    
-    
+
+
 @pytest.mark.asyncio
 async def test_register_user_with_invalid_username(client: AsyncClient) -> None:
     fake_user = create_fake_user()
     fake_user["username"] = "<invalid_username>"
-    
+
     response = await client.post("/auth/register", json=fake_user)
-    
+
     assert response.status_code == 422
     assert response.json()["detail"] is not None
-    
+
+
 @pytest.mark.asyncio
 async def test_register_user_with_invalid_password(client: AsyncClient) -> None:
     fake_user = create_fake_user()
     fake_user["password"] = "123"
-    
+
     response = await client.post("/auth/register", json=fake_user)
-    
+
     assert response.status_code == 422
     assert response.json()["detail"] is not None
+
 
 @pytest.mark.asyncio
 async def test_user_login(client: AsyncClient):
@@ -117,7 +119,8 @@ async def test_user_login_with_incorrect_password(client: AsyncClient):
 
     assert response.status_code == 401
     assert response.json()["message"] is not None
-    
+
+
 @pytest.mark.asyncio
 async def test_user_logout(client: AsyncClient):
     fake_user = create_fake_user()
@@ -128,13 +131,12 @@ async def test_user_logout(client: AsyncClient):
     login_response = await client.post("/auth/login", json=login_data)
 
     access_token = login_response.json()["token"]["access_token"]
-    logout_data = {
-        "access_token": access_token
-    }
+    logout_data = {"access_token": access_token}
     response = await client.post("/auth/logout", json=logout_data)
-    
+
     assert response.status_code == 200
     assert response.json()["message"] == "User logout successfully."
+
 
 @pytest.mark.asyncio
 async def test_user_logout_with_checking_current_user(client: AsyncClient):
