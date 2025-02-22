@@ -2,6 +2,7 @@
 
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -10,9 +11,8 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import { type registerFormSchema } from "@/features/auth/formSchema";
 import useFormSchema from "@/features/auth/useFormSchema";
 
