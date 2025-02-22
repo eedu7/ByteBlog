@@ -6,9 +6,12 @@ import SignInSVG from "../../public/assets/images/sign_in.svg";
 import SocialUserSVG from "../../public/assets/images/social_user.svg";
 import WelcomeSVG from "../../public/assets/images/welcome.svg";
 
-
-const images = {
-    AboutUsSVG, BlogPostSVG, ConnectedWorldSVG, PageNotFoundSVG, SignInSVG, SocialUserSVG, WelcomeSVG
-}
-
-export default images;
+export {
+    AboutUsSVG,
+    BlogPostSVG,
+    ConnectedWorldSVG,
+    PageNotFoundSVG,
+    SignInSVG,
+    SocialUserSVG,
+    WelcomeSVG,
+};
