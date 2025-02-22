@@ -6,6 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+
 import SignUpForm from "./SignUpForm";
 
 const SignUpCard = () => {

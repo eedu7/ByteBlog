@@ -9,7 +9,11 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 Authentication Page
             </nav>
             <main className="w-full h-[95vh] grid grid-cols-2 gap-2">
-                <section className="col-span-1 h-full">{children}</section>
+                <section className="col-span-1 h-full">
+                    <div className="w-full h-full flex justify-center items-center">
+                        {children}
+                    </div>
+                </section>
                 <section className="col-span-1 w-full h-full flex justify-center items-center">
                     <Image
                         src={WelcomeSVG}
