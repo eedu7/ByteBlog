@@ -6,6 +6,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import SocialAuthentication from "@/features/auth/SocialAuthentication";
 import SignUpForm from "./SignUpForm";
 
 const SignUpFormCard = () => {
@@ -21,9 +22,7 @@ const SignUpFormCard = () => {
                 <SignUpForm />
             </CardContent>
             <CardFooter>
-                {/* 
-                Adding social authentication
-                 */}
+                <SocialAuthentication />
             </CardFooter>
         </Card>
     );
