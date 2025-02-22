@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-    username: z.string().min(2).max(50),
+    username: z.string().min(2).max(20),
     email: z.string().email(),
     password: z.string().min(8).max(16),
 });
@@ -53,7 +53,7 @@ const SignUpForm = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="email"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Email Address</FormLabel>
@@ -70,10 +70,10 @@ const SignUpForm = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="username"
+                    name="password"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="Some Password"
