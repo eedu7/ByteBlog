@@ -1,5 +1,11 @@
+import SignInFormCard from "./SignInFormCard";
+
 const SignInPage = () => {
-    return <div>SignInPage</div>;
+    return (
+        <div>
+            <SignInFormCard />
+        </div>
+    );
 };
 
 export default SignInPage;

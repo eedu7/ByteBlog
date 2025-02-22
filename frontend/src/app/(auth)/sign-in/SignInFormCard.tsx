@@ -7,6 +7,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import SocialAuthentication from "@/features/auth/SocialAuthentication";
+import SignInForm from "./SignInForm";
 
 const SignInFormCard = () => {
     return (
@@ -17,7 +18,9 @@ const SignInFormCard = () => {
                     Glad to have you back. PLease log in to continue.
                 </CardDescription>
             </CardHeader>
-            <CardContent>{/* Sign In Form */}</CardContent>
+            <CardContent>
+                <SignInForm />
+            </CardContent>
             <CardFooter>
                 <SocialAuthentication />
             </CardFooter>
