@@ -8,38 +8,27 @@ import {
 
 const SocialAuthentication = () => {
     return (
-        <div className="flex flex-col gap-2">
-            <Button variant="outline" disabled>
-                <RiGoogleFill
-                    className="me-1 text-[#DB4437] dark:text-white/60"
-                    size={16}
-                    aria-hidden="true"
-                />
-                Login with Google
+        <div className="inline-flex flex-wrap gap-2">
+            <Button
+                variant="outline"
+                aria-label="Login with Google"
+                size="icon">
+                <RiGoogleFill size={16} aria-hidden="true" />
             </Button>
-            <Button variant="outline" disabled>
-                <RiTwitterXFill
-                    className="me-1 text-[#14171a] dark:text-white/60"
-                    size={16}
-                    aria-hidden="true"
-                />
-                Login with X
+            <Button
+                variant="outline"
+                aria-label="Login with Facebook"
+                size="icon">
+                <RiFacebookFill size={16} aria-hidden="true" />
             </Button>
-            <Button variant="outline" disabled>
-                <RiFacebookFill
-                    className="me-1 text-[#1877f2] dark:text-white/60"
-                    size={16}
-                    aria-hidden="true"
-                />
-                Login with Facebook
+            <Button variant="outline" aria-label="Login with X" size="icon">
+                <RiTwitterXFill size={16} aria-hidden="true" />
             </Button>
-            <Button variant="outline" disabled>
-                <RiGithubFill
-                    className="me-1 text-[#333333] dark:text-white/60"
-                    size={16}
-                    aria-hidden="true"
-                />
-                Login with GitHub
+            <Button
+                variant="outline"
+                aria-label="Login with GitHub"
+                size="icon">
+                <RiGithubFill size={16} aria-hidden="true" />
             </Button>
         </div>
     );
