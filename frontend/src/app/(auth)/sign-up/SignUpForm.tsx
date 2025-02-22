@@ -1,3 +1,5 @@
+"use client";
+
 import { z } from "zod";
 
 import {
@@ -9,6 +11,7 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { type registerFormSchema } from "@/features/auth/formSchema";
 import useFormSchema from "@/features/auth/useFormSchema";
@@ -72,6 +75,7 @@ const SignUpForm = () => {
                         </FormItem>
                     )}
                 />
+                <Button type="submit">Register</Button>
             </form>
         </Form>
     );
