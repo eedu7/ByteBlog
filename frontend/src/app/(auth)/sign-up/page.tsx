@@ -1,5 +1,11 @@
+import SignUpFormCard from "./SignUpFormCard";
+
 const SignUpPage = () => {
-    return <div>SignUpPage</div>;
+    return (
+        <div>
+            <SignUpFormCard />
+        </div>
+    );
 };
 
 export default SignUpPage;
