@@ -1,9 +1,9 @@
-import SignUpForm from "./SignUpForm";
+import SignUpCard from "./SignUpCard";
 
 const SignUpPage = () => {
     return (
         <div>
-            <SignUpForm />
+            <SignUpCard />
         </div>
     );
 };
