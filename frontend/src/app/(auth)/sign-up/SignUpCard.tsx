@@ -10,7 +10,7 @@ import SignUpForm from "./SignUpForm";
 
 const SignUpCard = () => {
     return (
-        <Card>
+        <Card className="w-[450px]">
             <CardHeader>
                 <CardTitle>Join Our Community</CardTitle>
                 <CardDescription>

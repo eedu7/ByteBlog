@@ -2,7 +2,7 @@ import SignUpCard from "./SignUpCard";
 
 const SignUpPage = () => {
     return (
-        <div>
+        <div className="w-full h-full flex justify-center items-center">
             <SignUpCard />
         </div>
     );
