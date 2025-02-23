@@ -113,7 +113,7 @@ const SignInForm = () => {
                                     <div className="text-end">
                                         <Link
                                             href="#"
-                                            className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
+                                            className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
                                             Forgot Password?
                                         </Link>
                                     </div>
@@ -123,13 +123,13 @@ const SignInForm = () => {
                         </FormItem>
                     )}
                 />
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-2 md:gap-0">
                     <Button type="submit" disabled={login.isPending}>
                         {login.isPending ? "Loading..." : "Login"}
                     </Button>
                     <Link
                         href="/sign-up"
-                        className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
+                        className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
                         Need an account? Register here
                     </Link>
                 </div>

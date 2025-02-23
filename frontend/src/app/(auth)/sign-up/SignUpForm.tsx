@@ -145,13 +145,13 @@ const SignUpForm = () => {
                         </FormItem>
                     )}
                 />
-                <div className="flex justify-between">
+                <div className="flex justify-between gap-2">
                     <Button type="submit" disabled={register.isPending}>
                         {register.isPending ? "Loading..." : "Register"}
                     </Button>
                     <Link
                         href="/sign-in"
-                        className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
+                        className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
                         Already have an account? Log in here
                     </Link>
                 </div>

@@ -8,7 +8,7 @@ import {
 
 export default function SocialAuthentication() {
     return (
-        <div className="flex flex-wrap gap-2 w-full justify-around px-12">
+        <div className="flex flex-wrap gap-2 w-full justify-around px-6 md:px-12">
             <Button
                 variant="outline"
                 aria-label="Login with Google"
