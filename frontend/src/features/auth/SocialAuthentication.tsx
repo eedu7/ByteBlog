@@ -12,7 +12,8 @@ export default function SocialAuthentication() {
             <Button
                 variant="outline"
                 aria-label="Login with Google"
-                size="icon">
+                size="icon"
+                disabled>
                 <RiGoogleFill
                     className="dark:text-primary text-[#DB4437]"
                     size={16}
@@ -22,14 +23,19 @@ export default function SocialAuthentication() {
             <Button
                 variant="outline"
                 aria-label="Login with Facebook"
-                size="icon">
+                size="icon"
+                disabled>
                 <RiFacebookFill
                     className="dark:text-primary text-[#1877f2]"
                     size={16}
                     aria-hidden="true"
                 />
             </Button>
-            <Button variant="outline" aria-label="Login with X" size="icon">
+            <Button
+                variant="outline"
+                aria-label="Login with X"
+                size="icon"
+                disabled>
                 <RiTwitterXFill
                     className="dark:text-primary text-[#14171a]"
                     size={16}
@@ -39,7 +45,8 @@ export default function SocialAuthentication() {
             <Button
                 variant="outline"
                 aria-label="Login with GitHub"
-                size="icon">
+                size="icon"
+                disabled>
                 <RiGithubFill
                     className="dark:text-primary text-black"
                     size={16}
