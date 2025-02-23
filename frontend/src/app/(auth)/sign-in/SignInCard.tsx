@@ -7,6 +7,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 
+import SocialAuthentication from "@/features/auth/SocialAuthentication";
 import SignInForm from "./SignInForm";
 
 const SignInCard = () => {
@@ -23,7 +24,7 @@ const SignInCard = () => {
                 <SignInForm />
             </CardContent>
             <CardFooter>
-                <h1 className="text-center">Social Authentication</h1>
+                <SocialAuthentication />
             </CardFooter>
         </Card>
     );
