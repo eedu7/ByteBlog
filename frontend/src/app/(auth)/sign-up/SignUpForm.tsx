@@ -18,8 +18,8 @@ import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeOffIcon, MailIcon, UserIcon } from "lucide-react";
 
 import { registerFormSchema } from "@/features/auth/formSchema";
-import useFormSchema from "@/features/auth/useFormSchema";
 import { useAuth } from "@/features/auth/useAuth";
+import useFormSchema from "@/features/auth/useFormSchema";
 
 const SignUpForm = () => {
     const [isVisible, setIsVisible] = React.useState<boolean>(false);
@@ -147,7 +147,9 @@ const SignUpForm = () => {
                     )}
                 />
                 <div className="flex justify-between">
-                    <Button type="submit">Register</Button>
+                    <Button type="submit" disabled={register.isPending}>
+                        {register.isPending ? "Loading..." : "Register"}
+                    </Button>
                     <Link
                         href="/sign-in"
                         className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 hover:scale-110 transition-transform">
