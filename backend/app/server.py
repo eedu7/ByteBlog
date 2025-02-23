@@ -3,6 +3,7 @@ from typing import List
 
 from fastapi import FastAPI, Request
 from fastapi.middleware import Middleware
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.exceptions import CustomException
@@ -40,6 +41,13 @@ def init_listeners(app_: FastAPI) -> None:
 
 def make_middleware() -> List[Middleware]:
     middleware = [
+        Middleware(
+            CORSMiddleware,
+            allow_origins=["*"],
+            allow_credentials=True,
+            allow_methods=["*"],
+            allow_headers=["*"]
+            ),
         Middleware(
             AuthenticationMiddleware, backend=AuthBackend(), on_error=on_auth_error
         )
