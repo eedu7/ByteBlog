@@ -129,7 +129,7 @@ const SignInForm = () => {
                     </Button>
                     <Link
                         href="/sign-up"
-                        className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 hover:scale-110 transition-transform">
+                        className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
                         Need an account? Register here
                     </Link>
                 </div>
