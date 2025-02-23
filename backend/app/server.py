@@ -46,11 +46,11 @@ def make_middleware() -> List[Middleware]:
             allow_origins=["*"],
             allow_credentials=True,
             allow_methods=["*"],
-            allow_headers=["*"]
-            ),
+            allow_headers=["*"],
+        ),
         Middleware(
             AuthenticationMiddleware, backend=AuthBackend(), on_error=on_auth_error
-        )
+        ),
     ]
     return middleware
 
