@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeOffIcon, MailIcon } from "lucide-react";
 
 import { loginFormSchema } from "@/features/auth/formSchema";
+import { useAuth } from "@/features/auth/useAuth";
 import useFormSchema from "@/features/auth/useFormSchema";
 
 const SignInForm = () => {
@@ -27,8 +28,10 @@ const SignInForm = () => {
 
     const { loginForm } = useFormSchema();
 
+    const { login } = useAuth();
+
     const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
-        console.table(values);
+        login.mutate(values);
     };
 
     return (
@@ -107,6 +110,13 @@ const SignInForm = () => {
                                             )}
                                         </button>
                                     </div>
+                                    <div className="text-end">
+                                        <Link
+                                            href="#"
+                                            className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
+                                            Forgot Password?
+                                        </Link>
+                                    </div>
                                 </div>
                             </FormControl>
                             <FormMessage />
@@ -114,7 +124,9 @@ const SignInForm = () => {
                     )}
                 />
                 <div className="flex justify-between">
-                    <Button type="submit">Log In</Button>
+                    <Button type="submit" disabled={login.isPending}>
+                        {login.isPending ? "Loading..." : "Login"}
+                    </Button>
                     <Link
                         href="/sign-up"
                         className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 hover:scale-110 transition-transform">

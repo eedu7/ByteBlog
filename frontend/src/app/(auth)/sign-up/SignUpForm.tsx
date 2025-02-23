@@ -32,7 +32,6 @@ const SignUpForm = () => {
 
     const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
         register.mutate(values);
-        console.table(values);
     };
 
     return (
