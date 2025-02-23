@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 import type { loginFormSchema } from "@/features/auth/formSchema";
 import useFormSchema from "@/features/auth/useFormSchema";
+import Link from "next/link";
 
 const SignInForm = () => {
     const { loginForm } = useFormSchema();
@@ -62,7 +63,14 @@ const SignInForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Log In</Button>
+                <div className="flex justify-between">
+                    <Button type="submit">Log In</Button>
+                    <Link
+                        href="/sign-up"
+                        className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 hover:scale-110 transition-transform">
+                        Need an account? Register here
+                    </Link>
+                </div>
             </form>
         </Form>
     );

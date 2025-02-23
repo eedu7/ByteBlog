@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 
 import { type registerFormSchema } from "@/features/auth/formSchema";
 import useFormSchema from "@/features/auth/useFormSchema";
+import Link from "next/link";
 
 const SignUpForm = () => {
     const { registerForm } = useFormSchema();
@@ -75,7 +76,14 @@ const SignUpForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Register</Button>
+                <div className="flex justify-between">
+                    <Button type="submit">Register</Button>
+                    <Link
+                        href="/sign-in"
+                        className="text-sm text-blue-600 underline underline-offset-2 hover:text-blue-900 hover:scale-110 transition-transform">
+                        Already have an account? Log in here
+                    </Link>
+                </div>
             </form>
         </Form>
     );
