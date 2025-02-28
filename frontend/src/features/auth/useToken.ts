@@ -18,12 +18,12 @@ export const useToken = create<TokenState>((set, get) => ({
 
     setAccessToken: (token: string, expires_in: number) => {
         set({ access_token: token });
-        setCookie("access_token", token, { maxAge: expires_in, secure: true, sameSite: "strict" });
+        setCookie("access_token", token, { maxAge: expires_in, secure: true, sameSite: "strict", httpOnly: true });
     },
 
     setRefreshToken: (token: string, expires_in: number) => {
         set({ refresh_token: token });
-        setCookie("refresh_token", token, { maxAge: expires_in, secure: true, sameSite: "strict" });
+        setCookie("refresh_token", token, { maxAge: expires_in, secure: true, sameSite: "strict", httpOnly: true });
     },
 
     getAccessToken: () => {
