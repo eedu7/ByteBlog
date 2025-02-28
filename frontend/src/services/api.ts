@@ -14,7 +14,7 @@ export const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
     (config) => {
 
-        const { getAccessToken } = useToken();
+        const { getAccessToken } = useToken.getState();
 
         const access_token = getAccessToken();
 
