@@ -9,20 +9,20 @@ export interface LoginUserRequest {
     password: string;
 }
 
-interface TokenResponse {
+export interface Token {
     access_token: string;
     refresh_token: string;
     expires_in: number;
     token_type: string;
 }
 
-interface UserResponse {
+export interface User {
     uuid: string;
     email: string;
     username: string;
 }
 
 export interface AuthResponse {
-    token: TokenResponse;
-    user: UserResponse;
+    token: Token;
+    user: User;
 }
