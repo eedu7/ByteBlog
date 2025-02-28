@@ -2,31 +2,27 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
 import { loginUser, registerUser } from "./api/auth.api";
-import { useStore } from "./useUser";
+import { useUser } from "./useUser";
+import { useToken } from "./useToken";
 
 export const useAuth = () => {
 
     const router = useRouter();
 
-    const { setUser, getUser } = useStore();
+    const { setUser, getUser } = useUser();
+    const { setAccessToken, setRefreshToken, getAccessToken, getRefreshToken } = useToken();
 
     const login = useMutation({
         mutationFn: loginUser,
         mutationKey: ["loginUser"],
         onSuccess: (data) => {
-            console.log("Login successful!");
-            console.table(data.token.expires_in);
-            console.table(data.user);
-
-            // Setting up the user
+            // Saving the user
             setUser(data.user);
 
-            // 
-            console.log("###");
-            console.log("###");
-            console.log(getUser());
-            console.log("###");
-            console.log("###");
+            // Saving the JWT tokens
+            setAccessToken(data.token.access_token, data.token.expires_in)
+            setRefreshToken(data.token.refresh_token, data.token.expires_in)
+
             // Redirect to home page
             router.push("/");
         },
@@ -38,12 +34,12 @@ export const useAuth = () => {
         mutationFn: registerUser,
         mutationKey: ["registerUser"],
         onSuccess: (data) => {
-            console.log("Register successful!");
-            console.table(data.token);
-            console.table(data.user);
-
             // Setting up the user
             setUser(data.user);
+
+            // Saving the JWT tokens
+            setAccessToken(data.token.access_token, data.token.expires_in);
+            setRefreshToken(data.token.refresh_token, data.token.expires_in);
 
             // Redirect to home Page
             router.push("/");
@@ -54,10 +50,14 @@ export const useAuth = () => {
     });
 
     const currentUser = getUser();
+    const access_token = getAccessToken();
+    const refresh_token = getRefreshToken();
 
     return {
         login,
         register,
         currentUser,
+        access_token,
+        refresh_token
     };
 };
