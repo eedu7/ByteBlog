@@ -11,7 +11,7 @@ interface UserState {
     getUser: () => User;
 }
 
-export const useStore = create<UserState>((set, get) => ({
+export const useUser = create<UserState>((set, get) => ({
     user: getCookie("user") ? (JSON.parse(getCookie("user") as string) as User) : { uuid: "", email: "", username: "" },
     setUser: (newUser: User) => {
         set({ user: newUser });
