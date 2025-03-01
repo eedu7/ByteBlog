@@ -14,7 +14,6 @@ import { EyeIcon, EyeOffIcon, MailIcon } from "lucide-react";
 import { loginFormSchema } from "@/features/auth/formSchema";
 import { useAuth } from "@/features/auth/useAuth";
 import useFormSchema from "@/features/auth/useFormSchema";
-import { useAuth } from "@/features/auth/useAuth";
 
 const SignInForm = () => {
     const [isVisible, setIsVisible] = React.useState<boolean>(false);
