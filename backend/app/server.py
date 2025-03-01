@@ -24,10 +24,15 @@ def on_auth_error(request: Request, exc: Exception):
 
 
 async def exception_handler(request: Request, exc: Exception | CustomException):
-    return JSONResponse(
-        status_code=exc.code,
-        content={"error_code": exc.error_code, "message": exc.message},
-    )
+    try:
+        return JSONResponse(
+            status_code=exc.code,
+            content={"error_code": exc.error_code, "message": exc.message or str(exc)},
+        )
+    except:
+        return JSONResponse(
+            status_code=400, content={"error_code": 400, "message": str(exc)}
+        )
 
 
 def init_router(app_: FastAPI):

@@ -38,7 +38,7 @@ class UserCRUD(BaseCRUD[User]):
         """
         try:
             filter_ = {"email": email}
-            return await super().get_by(filter_, unique=True)
+            return await self.get_by(filter_, unique=True)
         except Exception as e:
             raise BadRequestException(e)
 
@@ -54,7 +54,7 @@ class UserCRUD(BaseCRUD[User]):
         """
         try:
             filter_ = {"uuid": uuid}
-            return await super().get_by(filter_, unique=True)
+            return await self.get_by(filter_, unique=True)
         except Exception as e:
             raise BadRequestException(e)
 
@@ -80,7 +80,7 @@ class UserCRUD(BaseCRUD[User]):
 
         hashed_password = PasswordHandler.hash_password(password)
 
-        user = await super().create(
+        user = await self.create(
             {"username": username, "email": email, "password": hashed_password}
         )
         return user
@@ -104,10 +104,10 @@ class UserCRUD(BaseCRUD[User]):
         user = await self.get_by_email(email)
 
         if not user:
-            raise NotFoundException("User not found")
+            raise NotFoundException("User not found.")
 
         if not PasswordHandler.verify_password(password, user.password):
-            raise UnauthorizedException("Invalid credentials")
+            raise UnauthorizedException("Invalid credentials.")
 
         payload = {
             "uuid": str(user.uuid),
@@ -116,6 +116,25 @@ class UserCRUD(BaseCRUD[User]):
         }
 
         return self._token(payload)
+
+    async def forgot_password(self, uuid: UUID, old_password: str, new_password: str):
+        user = await self.get_by_uuid(uuid)
+
+        if not user:
+            raise NotFoundException("User not found.")
+
+        if not PasswordHandler.verify_password(old_password, user.password):
+            raise UnauthorizedException("Invalid credentials.")
+
+        hashed_new_password = PasswordHandler.hash_password(new_password)
+
+        updated_user = await self.update(
+            user,
+            {
+                "password": hashed_new_password,
+            },
+        )
+        return updated_user
 
     def _token(self, payload: Dict[str, Any]) -> Token:
         """
