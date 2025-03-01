@@ -85,7 +85,7 @@ class UserCRUD(BaseCRUD[User]):
         )
         return user
 
-    async def login(self, email: str, password: str):
+    async def login(self, email: str, password: str) -> Token:
         """
         Logs in a user by validating their credentials (email and password) and
         generating JWT tokens for authentication.
@@ -117,7 +117,24 @@ class UserCRUD(BaseCRUD[User]):
 
         return self._token(payload)
 
-    async def forgot_password(self, uuid: UUID, old_password: str, new_password: str):
+    async def forgot_password(
+        self, uuid: UUID, old_password: str, new_password: str
+    ) -> User:
+        """
+        Updates the user password, after validation if the user exists and old password matches.
+
+        Args:
+            uuid (UUID: The uuid of the user.
+            old_password (str): Old password of the user.
+            new_password (str): New password to chage from old password.
+
+        Returns:
+            User: The updated user.
+
+        Raises:
+            NotFoundException: If no user is found with the given email address.
+            UnauthorizedException: If the password is incorrect.
+        """
         user = await self.get_by_uuid(uuid)
 
         if not user:
