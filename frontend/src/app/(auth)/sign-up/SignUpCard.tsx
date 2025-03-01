@@ -12,13 +12,12 @@ import SignUpForm from "./SignUpForm";
 
 const SignUpCard = () => {
     return (
-        <Card className="w-[300px] md:w-[350px] lg:w-[370px]">
+        <Card className="mx-4 w-[400px] md:w-[400px] lg:w-[450px]">
             <CardHeader>
                 <CardTitle>Join Our Community</CardTitle>
                 <CardDescription>
-                    Sign up today to get access to the latest blog posts,
-                    exclusive content, and join discussion with like-minded
-                    readers&#33;
+                    Sign up today to get access to the latest blog posts, exclusive content, and
+                    join discussion with like-minded readers&#33;
                 </CardDescription>
             </CardHeader>
             <CardContent>

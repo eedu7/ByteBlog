@@ -12,12 +12,12 @@ import SignInForm from "./SignInForm";
 
 const SignInCard = () => {
     return (
-        <Card className="w-[300px] md:w-[350px] lg:w-[370px]">
+        <Card className="mx-4 w-[400px] md:w-[400px] lg:w-[450px]">
             <CardHeader>
                 <CardTitle>Ready to Continue?</CardTitle>
                 <CardDescription>
-                    Log in now to continue reading your favorite articles,
-                    comment on discussions, and enjoy new content&rsquo;
+                    Log in now to continue reading your favorite articles, comment on discussions,
+                    and enjoy new content&rsquo;
                 </CardDescription>
             </CardHeader>
             <CardContent>
