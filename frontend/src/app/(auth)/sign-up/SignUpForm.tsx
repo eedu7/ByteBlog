@@ -12,8 +12,8 @@ import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeOffIcon, MailIcon, UserIcon } from "lucide-react";
 
 import { registerFormSchema } from "@/features/auth/formSchema";
-import useFormSchema from "@/features/auth/useFormSchema";
 import { useAuth } from "@/features/auth/useAuth";
+import useFormSchema from "@/features/auth/useFormSchema";
 
 const SignUpForm = () => {
     const [isVisible, setIsVisible] = React.useState<boolean>(false);
@@ -26,7 +26,6 @@ const SignUpForm = () => {
 
     const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
         register.mutate(values);
-        console.table(values);
     };
 
     return (

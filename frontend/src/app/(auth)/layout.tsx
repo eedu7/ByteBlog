@@ -19,6 +19,7 @@ const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 </section>
             </main>
         </>
+       
     );
 };
 

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { EyeIcon, EyeOffIcon, MailIcon } from "lucide-react";
 
 import { loginFormSchema } from "@/features/auth/formSchema";
+import { useAuth } from "@/features/auth/useAuth";
 import useFormSchema from "@/features/auth/useFormSchema";
 import { useAuth } from "@/features/auth/useAuth";
 
@@ -89,6 +90,13 @@ const SignInForm = () => {
                                                 <EyeIcon size={16} aria-hidden="true" />
                                             )}
                                         </button>
+                                    </div>
+                                    <div className="text-end">
+                                        <Link
+                                            href="#"
+                                            className="text-xs text-blue-600 underline underline-offset-2 hover:text-blue-900 transition-transform">
+                                            Forgot Password?
+                                        </Link>
                                     </div>
                                 </div>
                             </FormControl>
