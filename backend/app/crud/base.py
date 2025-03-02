@@ -27,7 +27,7 @@ class BaseCRUD(Generic[ModelType]):
 
     async def get_by(
         self,
-        filters: Dict[str, Any],
+        filters: Dict[str, Any] | None = None,
         unique: bool = False,
         skip: int = 0,
         limit: int = 100,
@@ -36,23 +36,24 @@ class BaseCRUD(Generic[ModelType]):
         Asynchronously retrieves records from the database filtered by a specific field and value.
 
         Args:
-            filters (Dict[str, Any]): A dictionary where keys are field (column) names of the model, and values are the corresponding values to match against.
+            filters (Dict[str, Any], Optional): A dictionary where keys are field (column) names of the model, and values are the corresponding values to match against.
             unique (bool, optional): If `True`, returns a single matching record. If `False`,
                                         a list of matching records. Defaults to `False`.
             skip (int, optional): The number of records to skip. Defaults to `0`.
             limit (int, optional): The maximum number of records to return. Defaults to `100`.
 
         Returns:
-            Sequence[ModelType]: If `unique` is `False`, which returns a list of matching records.
+            Sequence[ModelType]: If `unique` is `False`, which returns a list of records or matching records.
             ModelType: If `unique` is `True`, which returns a single matching record.
-            None: If no records are found matching the criteria
+            None: If no records are found matching the criteria or there is no record.
 
         """
         query = select(self.model)
-        conditions = []
-        for field, value in filters.items():
-            conditions.append(getattr(self.model, field) == value)
-        query = query.where(and_(*conditions))
+        if filters:
+            conditions = []
+            for field, value in filters.items():
+                conditions.append(getattr(self.model, field) == value)
+            query = query.where(and_(*conditions))
         query = query.offset(skip).limit(limit)
         result = await self.session.execute(query)
         if unique:
