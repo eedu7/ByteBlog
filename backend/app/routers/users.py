@@ -6,8 +6,9 @@ from fastapi.responses import JSONResponse
 from app.crud import UserCRUD
 from app.dependencies import AuthenticationRequired, get_user_crud
 from app.dependencies.current_user import get_current_user
+from app.exceptions import BadRequestException
 from app.models import User
-from app.schemas.user import UserResponse
+from app.schemas.user import UpdateUserRequest, UserResponse
 
 user_router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
@@ -40,25 +41,39 @@ async def get_user(uuid: UUID):
 @user_router.post(
     "/{uuid}",
 )
-async def update_user_profile(uuid: UUID):
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            "message": "Update the user",
-            "api": f"http://localhost:8000/user/{uuid}",
-        },
-    )
+async def update_user_profile(
+    uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
+):
+    user_attr = data.model_dump()
+    updated = await user_crud.update_user(uuid, attributes=user_attr)
+
+    if updated:
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "message": "Updated user successfully.",
+                "api": f"http://localhost:8000/user/{uuid}",
+            },
+        )
+    raise BadRequestException("Error in updating user")
 
 
 @user_router.put("/{uuid}")
-async def partial_update_user_profile(uuid: UUID):
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            "message": "Partial update the user",
-            "api": f"http://localhost:8000/user/{uuid}",
-        },
-    )
+async def partial_update_user_profile(
+    uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crudet)
+):
+    user_attr = data.model_dump(exclude_none=True)
+    updated = await user_crud.update_user(uuid, attributes=user_attr)
+
+    if updated:
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "message": "Updated user successfully.",
+                "api": f"http://localhost:8000/user/{uuid}",
+            },
+        )
+    raise BadRequestException("Error in updating user")
 
 
 @user_router.delete("/{uuid}")

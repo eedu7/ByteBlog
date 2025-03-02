@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -58,7 +58,20 @@ class UserCRUD(BaseCRUD[User]):
         except Exception as e:
             raise BadRequestException(e)
 
-    async def get_all_users(self, skip: int = 0, limit: int = 100):
+    async def get_all_users(self, skip: int = 0, limit: int = 100) -> List[User] | None:
+        """
+        Asynchronously retrieves all the users.
+
+        Args:
+            skip (int): The number of users data to skip. Defaults to "0".
+            limit (int): The number of users data to retrieve. Defaults to "100"
+
+        Returns:
+            List[User] | None: The list of users data or None
+
+        Raises:
+            BadRequestException: If there is any error.
+        """
         try:
             return await self.get_by(
                 skip=skip,
@@ -93,6 +106,31 @@ class UserCRUD(BaseCRUD[User]):
             {"username": username, "email": email, "password": hashed_password}
         )
         return user
+
+    async def update_user_profile(self, uuid: UUID, attributes: Dict[str, Any]) -> bool:
+        """
+        Updates the profile of a user with the provided attributes.
+
+        Args:
+            uuid (UUID): The UUID of the user to be updated.
+            attributes (Dict[str, Any]): The attributes to be updated (e.g., username, email).
+
+        Returns:
+            bool: True if the update was successful, False otherwise
+
+        Raises:
+            NotFoundException: If the user with the provided UUID does not exist.
+        """
+        user = await self.get_by_uuid(uuid)
+
+        if not user:
+            raise NotFoundException("User not found.")
+
+        updated = await self.update(user, attributes)
+
+        if updated:
+            return True
+        return False
 
     async def login(self, email: str, password: str) -> Token:
         """

@@ -16,3 +16,9 @@ class CurrentUser(BaseModel):
 
     class Config:
         validate_assignment = True
+
+
+class UpdateUserRequest(BaseModel):
+    username: str | None = Field(
+        None, description="User username", examples=["john.doe"]
+    )
