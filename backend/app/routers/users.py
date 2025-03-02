@@ -8,8 +8,7 @@ from app.dependencies import AuthenticationRequired, get_user_crud
 from app.dependencies.current_user import get_current_user
 from app.exceptions import BadRequestException
 from app.models import User
-from app.schemas.user import (PartialUpdateUserRequest, UpdateUserRequest,
-                              UserResponse)
+from app.schemas.user import PartialUpdateUserRequest, UpdateUserRequest, UserResponse
 
 user_router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
@@ -29,14 +28,17 @@ async def get_current_user(current_user: User = Depends(get_current_user)):
 
 
 @user_router.get("/{uuid}")
-async def get_user(uuid: UUID):
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            "message": "Get user by uuid",
-            "api": f"http://localhost:8000/user/{uuid}",
-        },
-    )
+async def get_user(uuid: UUID, user_crud: UserCRUD = Depends(get_user_crud)):
+    user = await user_crud.get_by_uuid(uuid)
+    if user:
+        return user
+    else:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={
+                "message": "User not found",
+            },
+        )
 
 
 @user_router.put(
