@@ -41,8 +41,8 @@ class JWTHandler:
     secret_key = config.JWT_SECRET_KEY
     algorithm = config.JWT_ALGORITHM
 
-    @staticmethod
-    def encode(payload: Dict[str, Any], expire_in_min: int = 60) -> str:
+    @classmethod
+    def encode(cls, payload: Dict[str, Any], expire_in_min: int = 60) -> str:
         """
         Generates a JWT with the given payload and expiration time.
 
@@ -58,12 +58,10 @@ class JWTHandler:
 
         jti = str(uuid4())
         payload.update({"exp": expire, "jti": jti, "iat": time_of_encoding})
-        return jwt.encode(
-            payload, JWTHandler.secret_key, algorithm=JWTHandler.algorithm
-        )
+        return jwt.encode(payload, cls.secret_key, algorithm=cls.algorithm)
 
-    @staticmethod
-    def decode(token: str) -> Dict[str, Any]:
+    @classmethod
+    def decode(cls, token: str) -> Dict[str, Any]:
         """
         Decodes and verifies a JWT token.
 
@@ -78,10 +76,32 @@ class JWTHandler:
             JWTDecodeError: If the token is invalid or cannot be decoded.
         """
         try:
-            return jwt.decode(
-                token, JWTHandler.secret_key, algorithms=[JWTHandler.algorithm]
-            )
+            return jwt.decode(token, cls.secret_key, algorithms=[cls.algorithm])
         except ExpiredSignatureError:
             raise JWTExpiredError()
+        except JWTError as e:
+            raise JWTDecodeError() from e
+
+    @classmethod
+    def decode_expired(cls, token: str) -> Dict[str, Any]:
+        """
+        Decodes a expired JWT token.
+
+        Args:
+            token (str): The JWT token to decode.
+
+        Returns:
+            Dict[str, Any]: The decoded payload.
+
+        Raises:
+            JWTDecodeError: If the token is invalid or cannot be decoded.
+        """
+        try:
+            return jwt.decode(
+                token,
+                cls.secret_key,
+                algorithms=[cls.algorithm],
+                options={"verify_exp": False},
+            )
         except JWTError as e:
             raise JWTDecodeError() from e
