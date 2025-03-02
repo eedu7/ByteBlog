@@ -45,7 +45,7 @@ async def update_user_profile(
     uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
 ):
     user_attr = data.model_dump()
-    updated = await user_crud.update_user(uuid, attributes=user_attr)
+    updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
 
     if updated:
         return JSONResponse(
@@ -60,10 +60,10 @@ async def update_user_profile(
 
 @user_router.put("/{uuid}")
 async def partial_update_user_profile(
-    uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crudet)
+    uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
 ):
     user_attr = data.model_dump(exclude_none=True)
-    updated = await user_crud.update_user(uuid, attributes=user_attr)
+    updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
 
     if updated:
         return JSONResponse(
