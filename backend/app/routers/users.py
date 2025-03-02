@@ -8,7 +8,8 @@ from app.dependencies import AuthenticationRequired, get_user_crud
 from app.dependencies.current_user import get_current_user
 from app.exceptions import BadRequestException
 from app.models import User
-from app.schemas.user import UpdateUserRequest, UserResponse
+from app.schemas.user import (PartialUpdateUserRequest, UpdateUserRequest,
+                              UserResponse)
 
 user_router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
@@ -60,7 +61,9 @@ async def update_user_profile(
 
 @user_router.put("/{uuid}")
 async def partial_update_user_profile(
-    uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
+    uuid: UUID,
+    data: PartialUpdateUserRequest,
+    user_crud: UserCRUD = Depends(get_user_crud),
 ):
     user_attr = data.model_dump(exclude_none=True)
     updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
