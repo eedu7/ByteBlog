@@ -4,9 +4,10 @@ from sqlalchemy import UUID, Unicode
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
+from app.database.mixins import TimeStampMixin, UserAuditMixin
 
 
-class User(Base):
+class User(Base, TimeStampMixin, UserAuditMixin):
     __tablename__ = "users"
 
     uuid: Mapped[UUID] = mapped_column(
