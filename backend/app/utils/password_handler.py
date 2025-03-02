@@ -1,5 +1,7 @@
 from passlib.context import CryptContext
 
+from app.exceptions import BadRequestException
+
 
 class PasswordHandler:
     """
@@ -15,8 +17,8 @@ class PasswordHandler:
 
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-    @staticmethod
-    def hash_password(password: str) -> str:
+    @classmethod
+    def hash_password(cls, password: str) -> str:
         """
         Hash a plain-text password using the bcrypt algorithm.
 
@@ -26,10 +28,12 @@ class PasswordHandler:
         Returns:
             str: The hashed password, which can be stored securely.
         """
-        return PasswordHandler.pwd_context.hash(password)
+        if not isinstance(password, str) or not password.strip():
+            raise BadRequestException("Password must be a non-empty string.")
+        return cls.pwd_context.hash(password)
 
-    @staticmethod
-    def verify_password(password: str, hashed_password: str) -> bool:
+    @classmethod
+    def verify_password(cls, password: str, hashed_password: str) -> bool:
         """
         Verify whether a given plain-text password matches a hashed password.
 
@@ -40,4 +44,10 @@ class PasswordHandler:
         Returns:
             bool: `True` if the password matches the hash, `False` otherwise.
         """
-        return PasswordHandler.pwd_context.verify(password, hashed_password)
+        if not isinstance(password, str) or not password.strip():
+            raise BadRequestException("Password must be a non-empty string.")
+        if not isinstance(hashed_password, str) or not hashed_password.strip():
+            raise BadRequestException(
+                "Hashed password must be a valid non-empty string."
+            )
+        return cls.pwd_context.verify(password, hashed_password)
