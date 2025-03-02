@@ -27,3 +27,9 @@ class UnauthorizedException(CustomException):
     code = HTTPStatus.UNAUTHORIZED
     error_code = HTTPStatus.UNAUTHORIZED
     message = HTTPStatus.UNAUTHORIZED.description
+
+
+class DatabaseException(CustomException):
+    code = HTTPStatus.INTERNAL_SERVER_ERROR
+    error_code = HTTPStatus.INTERNAL_SERVER_ERROR
+    message = "A database error occurred."

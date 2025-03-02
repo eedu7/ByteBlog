@@ -16,3 +16,25 @@ class CurrentUser(BaseModel):
 
     class Config:
         validate_assignment = True
+
+
+class UpdateUserRequest(BaseModel):
+    username: str = Field(..., description="User username", examples=["john.doe"])
+    full_name: str = Field(..., description="User full name", exampls=["John Doe"])
+    bio: str = Field(
+        ...,
+        description="Use bio",
+    )
+
+
+class PartialUpdateUserRequest(BaseModel):
+    username: str | None = Field(
+        None, description="User username", examples=["john.doe"]
+    )
+    full_name: str | None = Field(
+        None, description="User full name", exampls=["John Doe"]
+    )
+    bio: str | None = Field(
+        None,
+        description="Use bio",
+    )
