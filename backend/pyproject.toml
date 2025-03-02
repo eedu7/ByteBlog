@@ -20,6 +20,10 @@ pytest = "^8.3.4"
 faker = "^36.1.1"
 pytest-asyncio = "^0.25.3"
 trio = "^0.29.0"
+psycopg2-binary = "^2.9.10"
+psycopg2 = "^2.9.10"
+asyncio = "^3.4.3"
+cryptography = "^44.0.2"
 
 
 [tool.poetry.group.dev.dependencies]
