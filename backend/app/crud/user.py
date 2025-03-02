@@ -211,15 +211,15 @@ class UserCRUD(BaseCRUD[User]):
         Returns:
             Token: A Token object containing the access token, refresh token, token type (default: `bearer`) and token expiration time.
         """
-        access_token = JWTHandler.encode(
+        access_token, expiry = JWTHandler.encode(
             payload, config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
         )
         payload.update({"sub": "refresh_token"})
-        refresh_token = JWTHandler.encode(
+        refresh_token, _ = JWTHandler.encode(
             payload, config.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
         )
         return Token(
             access_token=access_token,
             refresh_token=refresh_token,
-            expires_in=config.JWT_ACCESS_TOKEN_EXPIRE_MINUTES,
+            expires_in=expiry,
         )
