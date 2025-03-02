@@ -73,7 +73,7 @@ def mock_handler(mock_config):
 class TestJWTHandler:
     @patch("app.utils.jwt_handler.config", MagicMock(return_value=mock_config))
     def test_encode(self, mock_payload, mock_handler, mock_config):
-        token = mock_handler.encode(mock_payload, mock_config.JWT_EXPIRE_MINUTES)
+        token, _ = mock_handler.encode(mock_payload, mock_config.JWT_EXPIRE_MINUTES)
         assert token is not None
         assert isinstance(token, str)
 

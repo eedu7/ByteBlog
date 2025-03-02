@@ -1,6 +1,6 @@
 from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 from uuid import uuid4
 
 from jose import ExpiredSignatureError, JWTError, jwt
@@ -42,7 +42,9 @@ class JWTHandler:
     algorithm = config.JWT_ALGORITHM
 
     @classmethod
-    def encode(cls, payload: Dict[str, Any], expire_in_min: int = 60) -> str:
+    def encode(
+        cls, payload: Dict[str, Any], expire_in_min: int = 60
+    ) -> Tuple[str, datetime]:
         """
         Generates a JWT with the given payload and expiration time.
 
@@ -54,11 +56,11 @@ class JWTHandler:
             str: The encoded JWT as string
         """
         time_of_encoding = datetime.now(UTC)
-        expire = time_of_encoding + timedelta(expire_in_min)
+        expire = time_of_encoding + timedelta(minutes=expire_in_min)
 
         jti = str(uuid4())
         payload.update({"exp": expire, "jti": jti, "iat": time_of_encoding})
-        return jwt.encode(payload, cls.secret_key, algorithm=cls.algorithm)
+        return jwt.encode(payload, cls.secret_key, algorithm=cls.algorithm), expire
 
     @classmethod
     def decode(cls, token: str) -> Dict[str, Any]:
