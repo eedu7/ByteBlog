@@ -6,6 +6,12 @@ meta {
 
 post {
   url: {{HOST}}:{{PORT}}/auth/logout
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "access_token": "access_key"
+  }
 }

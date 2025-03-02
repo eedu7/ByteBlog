@@ -5,7 +5,11 @@ meta {
 }
 
 delete {
-  url: {{HOST}}:{{PORT}}/user/uuid
+  url: {{HOST}}:{{PORT}}/user/{{UUID}}
   body: none
   auth: none
+}
+
+headers {
+  Authorization: Bearer {{ACCESS_TOKEN}}
 }
