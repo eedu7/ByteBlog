@@ -132,6 +132,28 @@ class UserCRUD(BaseCRUD[User]):
             return True
         return False
 
+    async def delete_user(self, uuid: UUID) -> None:
+        """
+        Deletes a user from the database based on the provided UUID.
+
+        Args:
+            uuid (UUID): The UUID of the user to be deleted.
+
+        Returns:
+            None
+
+        Raises:
+            NotFoundException: If no user is found with the given UUID.
+            BadRequestException: If there is an error during deletion.
+        """
+        user = await self.get_by_uuid(uuid)
+        if not user:
+            raise NotFoundException("User not found.")
+        try:
+            await self.delete(user)
+        except Exception as e:
+            raise BadRequestException(f"Exception on deleting user. {e}")
+
     async def login(self, email: str, password: str) -> Token:
         """
         Logs in a user by validating their credentials (email and password) and

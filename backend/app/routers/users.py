@@ -80,11 +80,11 @@ async def partial_update_user_profile(
 
 
 @user_router.delete("/{uuid}")
-async def delete_user(uuid: UUID):
+async def delete_user(uuid: UUID, user_crud: UserCRUD = Depends(get_user_crud)):
+    await user_crud.delete_user(uuid)
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={
-            "message": "Delete user",
-            "api": f"http://localhost:8000/user/{uuid}",
+            "message": "User deleted successfully.",
         },
     )
