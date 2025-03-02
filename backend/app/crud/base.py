@@ -1,9 +1,11 @@
 from typing import Any, Dict, Generic, Sequence, Type, TypeVar
 
+from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import and_, select
 
 from app.database import Base
+from app.exceptions import DatabaseException
 
 ModelType = TypeVar("ModelType", bound=Base)
 
@@ -48,17 +50,21 @@ class BaseCRUD(Generic[ModelType]):
             None: If no records are found matching the criteria or there is no record.
 
         """
-        query = select(self.model)
-        if filters:
-            conditions = []
-            for field, value in filters.items():
-                conditions.append(getattr(self.model, field) == value)
-            query = query.where(and_(*conditions))
-        query = query.offset(skip).limit(limit)
-        result = await self.session.execute(query)
-        if unique:
-            return result.scalars().first()
-        return result.scalars().all()
+        try:
+            query = select(self.model)
+            if filters:
+                conditions = []
+                for field, value in filters.items():
+                    conditions.append(getattr(self.model, field) == value)
+                query = query.where(and_(*conditions))
+            query = query.offset(skip).limit(limit)
+            result = await self.session.execute(query)
+            if unique:
+                return result.scalars().first()
+            return result.scalars().all()
+
+        except Exception as e:
+            raise DatabaseException(f"Exception in fetching records.. {e}")
 
     async def create(self, attributes: Dict[str, Any]) -> ModelType:
         """
@@ -73,10 +79,14 @@ class BaseCRUD(Generic[ModelType]):
         Notes:
             The model is added to the session and committed to the database, making the record permanent.
         """
-        model = self.model(**attributes)
-        self.session.add(model)
-        await self.session.commit()
-        return model
+        try:
+            model = self.model(**attributes)
+            self.session.add(model)
+            await self.session.commit()
+            return model
+
+        except Exception as e:
+            raise DatabaseException(f"Exception in creating record. {e}")
 
     async def update(self, model: ModelType, attributes: Dict[str, Any]) -> bool:
         """
@@ -92,10 +102,14 @@ class BaseCRUD(Generic[ModelType]):
         Notes:
             The provided model's fields are updated with the new attributes, and changes are commited to the database.
         """
-        for key, value in attributes.items():
-            setattr(model, key, value)
-        await self.session.commit()
-        return True
+        try:
+            for key, value in attributes.items():
+                setattr(model, key, value)
+            await self.session.commit()
+            return True
+
+        except Exception as e:
+            raise DatabaseException(f"Exception in updating record. {e}")
 
     async def delete(self, model: ModelType) -> bool:
         """
@@ -110,6 +124,9 @@ class BaseCRUD(Generic[ModelType]):
         Notes:
             The model is removed from the session and committed, making the deletion permanent.
         """
-        await self.session.delete(model)
-        await self.session.commit()
-        return True
+        try:
+            await self.session.delete(model)
+            await self.session.commit()
+            return True
+        except Exception as e:
+            raise DatabaseException(f"Exception in deleting record. {e}")
