@@ -12,6 +12,6 @@ router.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 router.include_router(user_router, prefix="/user", tags=["User"])
 
 
-@router.get("/")
+@router.get("/", tags=["Health"])
 async def index():
     return JSONResponse(status_code=HTTPStatus.OK, content={"message": "OK"})
