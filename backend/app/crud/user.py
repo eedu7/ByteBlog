@@ -186,7 +186,7 @@ class UserCRUD(BaseCRUD[User]):
 
         return self._token(payload)
 
-    async def forgot_password(
+    async def reset_password(
         self, uuid: UUID, old_password: str, new_password: str
     ) -> User:
         """

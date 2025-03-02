@@ -6,9 +6,9 @@ from fastapi.responses import JSONResponse
 from app.crud import UserCRUD
 from app.dependencies import get_user_crud
 from app.dependencies.authentication import AuthenticationRequired
-from app.schemas.auth import (AuthResponse, ForgotPasswordRequest,
-                              LoginUserRequest, LogoutUserRequest,
-                              RegisterUserRequest)
+from app.schemas.auth import (AuthResponse, LoginUserRequest,
+                              LogoutUserRequest, RegisterUserRequest,
+                              ResetPasswordRequest)
 
 auth_router = APIRouter()
 
@@ -42,14 +42,14 @@ async def logout(data: LogoutUserRequest):
 
 
 @auth_router.post(
-    "/forgot-password/{uuid}", dependencies=[Depends(AuthenticationRequired)]
+    "/reset-password/{uuid}", dependencies=[Depends(AuthenticationRequired)]
 )
-async def forgot_password(
+async def reset_password(
     uuid: UUID,
-    data: ForgotPasswordRequest,
+    data: ResetPasswordRequest,
     user_crud: UserCRUD = Depends(get_user_crud),
 ):
-    await user_crud.forgot_password(uuid, data.old_password, data.new_password)
+    await user_crud.reset_password(uuid, data.old_password, data.new_password)
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content={"message": "Forget password"}
+        status_code=status.HTTP_200_OK, content={"message": "Password changed"}
     )

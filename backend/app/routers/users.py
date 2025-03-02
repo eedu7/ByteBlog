@@ -39,7 +39,7 @@ async def get_user(uuid: UUID):
     )
 
 
-@user_router.post(
+@user_router.put(
     "/{uuid}",
 )
 async def update_user_profile(
@@ -59,7 +59,7 @@ async def update_user_profile(
     raise BadRequestException("Error in updating user")
 
 
-@user_router.put("/{uuid}")
+@user_router.patch("/{uuid}")
 async def partial_update_user_profile(
     uuid: UUID,
     data: PartialUpdateUserRequest,
