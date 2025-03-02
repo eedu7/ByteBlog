@@ -1,0 +1,18 @@
+meta {
+  name: Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{HOST}}:{{PORT}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "uzumaki.naruto@konoha.com",
+    "password": "Password@123"
+  }
+}

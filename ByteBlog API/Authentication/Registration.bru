@@ -1,0 +1,19 @@
+meta {
+  name: Registration
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{HOST}}:{{PORT}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "Uzumaki Naruto",
+    "email": "uzumaki.naruto@konoha.com",
+    "password": "Password@123"
+  }
+}
