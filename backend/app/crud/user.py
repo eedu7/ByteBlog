@@ -58,6 +58,15 @@ class UserCRUD(BaseCRUD[User]):
         except Exception as e:
             raise BadRequestException(e)
 
+    async def get_all_users(self, skip: int = 0, limit: int = 100):
+        try:
+            return await self.get_by(
+                skip=skip,
+                limit=limit,
+            )
+        except Exception as e:
+            raise BadRequestException(f"Exception on fetching all user. `{e}`")
+
     async def register(self, email: str, password: str, username: str) -> User:
         """
         Registers a new user asynchronously by hashing their password and saving
