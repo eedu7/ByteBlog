@@ -6,9 +6,13 @@ from fastapi.responses import JSONResponse
 from app.crud import UserCRUD
 from app.dependencies import get_user_crud
 from app.dependencies.authentication import AuthenticationRequired
-from app.schemas.auth import (AuthResponse, LoginUserRequest,
-                              LogoutUserRequest, RegisterUserRequest,
-                              ResetPasswordRequest)
+from app.schemas.auth import (
+    AuthResponse,
+    LoginUserRequest,
+    LogoutUserRequest,
+    RegisterUserRequest,
+    ResetPasswordRequest,
+)
 
 auth_router = APIRouter()
 
