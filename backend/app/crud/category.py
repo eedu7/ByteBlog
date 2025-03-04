@@ -6,12 +6,12 @@ from app.models import Category
 
 class CategoryCRUD(BaseCRUD[Category]):
     """
-    Category-specific CRUD operations for managing user accounts in the database.
+    Category-specific CRUD operations in the database.
     """
 
     def __init__(self, session: AsyncSession):
         """
-        Initializes the CategoryCRUD class with the provided async session and Post Model
+        Initializes the CategoryCRUD class with the provided async session and Category Model
 
         Args:
             session (AsyncSession): The SQLAlchemy asynchronous session to interact with the database.

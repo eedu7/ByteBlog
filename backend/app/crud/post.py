@@ -6,7 +6,7 @@ from app.models import Post
 
 class PostCRUD(BaseCRUD[Post]):
     """
-    Post-specific CRUD operations for managing user accounts in the database.
+    Post-specific CRUD operations in the database.
     """
 
     def __init__(self, session: AsyncSession):
