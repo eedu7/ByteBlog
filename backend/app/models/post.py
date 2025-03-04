@@ -14,7 +14,7 @@ class Post(Base, UserAuditMixin, TimeStampMixin):
     uuid: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), primary_key=True, unique=True, nullable=False, default=uuid4
     )
-    title: Mapped[str] = mapped_column(Text, nullable=False)
+    title: Mapped[str] = mapped_column(Unicode(255), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
     status: Mapped[PostStatus] = mapped_column(
         Enum(PostStatus, create_type=False), nullable=False, default=PostStatus.DRAFT
