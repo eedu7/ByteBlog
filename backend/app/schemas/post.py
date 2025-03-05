@@ -27,7 +27,7 @@ class PostUpdateRequest(PostBase):
     pass
 
 
-class PostPartialUpdateRequest:
+class PostPartialUpdateRequest(BaseModel):
     title: str | None = Field(None, examples=["Title of the post"], max_length=255)
     body: str | None = Field(None, examples=["This is the content of the post"])
     status: PostStatus | None = Field(

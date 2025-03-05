@@ -7,8 +7,7 @@ from app.dependencies import (AuthenticationRequired, CRUDProvider,
                               get_current_user)
 from app.models import User
 from app.schemas.post import (PostCreateRequest, PostCreateResponse,
-                              PostPartialUpdateRequest,
-                              PostUpdateStatusRequest)
+                              PostPartialUpdateRequest, PostUpdateRequest)
 
 router = APIRouter()
 
@@ -49,7 +48,7 @@ async def create_post(
 @router.put("/{uuid}", status_code=status.HTTP_200_OK)
 async def update_post(
     uuid: UUID,
-    data: PostUpdateStatusRequest,
+    data: PostUpdateRequest,
     current_user: User = Depends(get_current_user),
     crud: PostCRUD = Depends(CRUDProvider.get_post_curd),
 ):
