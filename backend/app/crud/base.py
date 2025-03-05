@@ -1,4 +1,5 @@
 from typing import Any, Dict, Generic, Sequence, Type, TypeVar
+from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import and_, select
@@ -76,6 +77,24 @@ class BaseCRUD(Generic[ModelType]):
 
         except Exception as e:
             raise DatabaseException(f"Exception in fetching records.. {e}")
+
+    async def get_by_uuid(self, uuid: str | UUID) -> ModelType | None:
+        """
+        Asynchronously retrieves a record from the database by its UUID.
+
+        Args:
+            uuid (str | UUID): The UUID of the record to fetch.
+
+        Returns:
+            ModelType: The record fetched from the database.
+
+        Raises:
+            DatabaseException: If there is an error fetching the record.
+        """
+        try:
+            return await self.get_by(filters={"uuid": uuid}, unique=True)
+        except Exception as e:
+            raise DatabaseException(f"Exception in fetching record by uuid. {e}")
 
     async def create(self, attributes: Dict[str, Any]) -> ModelType:
         """
