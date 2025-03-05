@@ -45,12 +45,12 @@ class PostCRUD(BaseCRUD[Post]):
         except Exception as e:
             raise BadRequestException(f"Exception on fetching post records. {e}")
 
-    async def get_post_by_uuid(self, uuid) -> Post:
+    async def get_post_by_uuid(self, uuid: UUID) -> Post:
         """
         Get a post by its UUID.
 
         Args:
-            uuid: The UUID of the post to fetch.
+            uuid (UUID): The UUID of the post to fetch.
 
         Returns:
             Post: The post record.
@@ -60,7 +60,7 @@ class PostCRUD(BaseCRUD[Post]):
             BadRequestException: If there is an error fetching the post record.
         """
         try:
-            post = await self.get_by_uuid(uuid)
+            post = await self.get_by(filters={"uuid": uuid}, unique=True)
             if not post:
                 raise NotFoundException("No post found.")
             return post
@@ -102,8 +102,10 @@ class PostCRUD(BaseCRUD[Post]):
         """
         try:
             post = await self.get_post_by_uuid(uuid)
-            post = await self.update(post, attributes)
-            return post
+            updated = await self.update(post, attributes)
+            if updated:
+                return True
+            return False
         except Exception as e:
             raise BadRequestException(f"Exception on updating post. {e}")
 

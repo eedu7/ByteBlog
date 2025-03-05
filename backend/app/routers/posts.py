@@ -47,7 +47,7 @@ async def create_post(
 
 @router.put(
     "/{uuid}",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(AuthenticationRequired)],
 )
 async def update_post(
@@ -58,16 +58,12 @@ async def update_post(
 ):
     data = data.model_dump()
     data.update({"updated_by": current_user.uuid})
-    updated_post = await crud.update_post(uuid, data)
-    return {
-        "message": "Post updated successfully.",
-        "post": updated_post,
-    }
+    await crud.update_post(uuid, data)
 
 
 @router.patch(
     "/{uuid}",
-    status_code=status.HTTP_200_OK,
+    status_code=status.HTTP_204_NO_CONTENT,
     dependencies=[Depends(AuthenticationRequired)],
 )
 async def partial_update_post(
@@ -78,11 +74,7 @@ async def partial_update_post(
 ):
     data = data.model_dump(exclude_none=True)
     data.update({"updated_by": current_user.uuid})
-    updated_post = await crud.update_post(uuid, data)
-    return {
-        "message": "Post updated successfully.",
-        "post": updated_post,
-    }
+    await crud.update_post(uuid, data)
 
 
 @router.delete(
