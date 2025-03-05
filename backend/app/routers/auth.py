@@ -45,7 +45,7 @@ async def login(
 async def logout(data: LogoutUserRequest):
     return JSONResponse(
         status_code=status.HTTP_200_OK,
-        content={"message": "User logout successfully.", "data": data},
+        content={"message": "User logout successfully.", "data": data.model_dump()},
     )
 
 
