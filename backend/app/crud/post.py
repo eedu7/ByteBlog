@@ -21,7 +21,7 @@ class PostCRUD(BaseCRUD[Post]):
         """
         super().__init__(model=Post, session=session)
 
-    async def get_all(self, skip: int = 0, limit: int = 100) -> List[Post]:
+    async def get_all_posts(self, skip: int = 0, limit: int = 100) -> List[Post]:
         """
         Get all posts from the database.
 
@@ -54,7 +54,6 @@ class PostCRUD(BaseCRUD[Post]):
         Returns:
             Post: The created post.
 
-        Raises:
             BadRequestException: If there is an error creating the post.
         """
         try:

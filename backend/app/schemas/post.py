@@ -1,4 +1,5 @@
 from enum import StrEnum
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -10,7 +11,7 @@ class PostStatus(StrEnum):
     ARCHIVED = "archived"
 
 
-class PostCreateRequest(BaseModel):
+class PostBase(BaseModel):
     title: str = Field(..., examples=["Title of the post"], max_length=255)
     body: str = Field(..., examples=["This is the content of the post"])
     status: PostStatus = Field(
@@ -18,6 +19,20 @@ class PostCreateRequest(BaseModel):
     )
 
 
+class PostCreateRequest(PostBase):
+    pass
+
+
+class PostResponse(PostBase):
+    uuid: str | UUID = Field(..., description="Post UUID")
+
+    class Config:
+        form_attributes = True
+
+
 class PostCreateResponse(BaseModel):
     message: str = Field(default="Post created successfully.")
-    post: PostCreateRequest
+    post: PostResponse
+
+    class Config:
+        form_attributes = True

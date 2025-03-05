@@ -22,23 +22,30 @@ async def register(
     user_data = data.model_dump()
     user = await user_crud.register(**user_data)
     token = await user_crud.login(user_data["email"], user_data["password"])
-    return AuthResponse(token=token, user=UserResponse.model_validate(user))
+    return {
+        "token": token,
+        "user": user,
+    }
 
 
-@router.post("/login", response_model=AuthResponse)
+@router.post("/login", response_model=AuthResponse, status_code=status.HTTP_200_OK)
 async def login(
     data: LoginUserRequest, user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud)
 ):
     login_data = data.model_dump()
     token = await user_crud.login(**login_data)
     user = await user_crud.get_by_email(login_data.get("email"))
-    return AuthResponse(token=token, user=UserResponse.model_validate(user))
+    return {
+        "token": token,
+        "user": user,
+    }
 
 
 @router.post("/logout")
 async def logout(data: LogoutUserRequest):
     return JSONResponse(
-        status_code=status.HTTP_200_OK, content={"message": "User logout successfully."}
+        status_code=status.HTTP_200_OK,
+        content={"message": "User logout successfully.", "data": data},
     )
 
 
