@@ -1,4 +1,5 @@
 from typing import Any, Dict, List
+from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -44,6 +45,28 @@ class PostCRUD(BaseCRUD[Post]):
         except Exception as e:
             raise BadRequestException(f"Exception on fetching post records. {e}")
 
+    async def get_post_by_uuid(self, uuid) -> Post:
+        """
+        Get a post by its UUID.
+
+        Args:
+            uuid: The UUID of the post to fetch.
+
+        Returns:
+            Post: The post record.
+
+        Raises:
+            NotFoundException: If there is no post found.
+            BadRequestException: If there is an error fetching the post record.
+        """
+        try:
+            post = await self.get_by_uuid(uuid)
+            if not post:
+                raise NotFoundException("No post found.")
+            return post
+        except Exception as e:
+            raise NotFoundException(f"Exception on fetching post record. {e}")
+
     async def create_post(self, attributes: Dict[str, Any]) -> Post:
         """
         Create a new post in the database.
@@ -61,3 +84,42 @@ class PostCRUD(BaseCRUD[Post]):
             return post
         except Exception as e:
             raise BadRequestException(f"Exception on creating post. {e}")
+
+    async def update_post(self, uuid: UUID, attributes: Dict[str, Any]) -> Post:
+        """
+        Update a post in the database.
+
+        Args:
+            uuid: The UUID of the post to update.
+            attributes (Dict[str, Any]): The attributes to update.
+
+        Returns:
+            Post: The updated post.
+
+        Raises:
+            NotFoundException: If there is no post found.
+            BadRequestException: If there is an error updating the post.
+        """
+        try:
+            post = await self.get_post_by_uuid(uuid)
+            post = await self.update(post, attributes)
+            return post
+        except Exception as e:
+            raise BadRequestException(f"Exception on updating post. {e}")
+
+    async def delete_post(self, uuid: UUID) -> None:
+        """
+        Delete a post from the database.
+
+        Args:
+            uuid: The UUID of the post to delete.
+
+        Raises:
+            NotFoundException: If there is no post found.
+            BadRequestException: If there is an error deleting the post.
+        """
+        try:
+            post = await self.get_post_by_uuid(uuid)
+            await self.delete(post)
+        except Exception as e:
+            raise BadRequestException(f"Exception on deleting post. {e}")
