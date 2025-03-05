@@ -1,6 +1,5 @@
 from typing import Any, Dict, Generic, Sequence, Type, TypeVar
 
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql.expression import and_, select
 
@@ -30,9 +29,12 @@ class BaseCRUD(Generic[ModelType]):
     async def get_by(
         self,
         filters: Dict[str, Any] | None = None,
+        *,
         unique: bool = False,
         skip: int = 0,
         limit: int = 100,
+        order_by: str | None = None,
+        order_desc: bool = False,
     ) -> Sequence[ModelType] | ModelType | None:
         """
         Asynchronously retrieves records from the database filtered by a specific field and value.
@@ -43,6 +45,8 @@ class BaseCRUD(Generic[ModelType]):
                                         a list of matching records. Defaults to `False`.
             skip (int, optional): The number of records to skip. Defaults to `0`.
             limit (int, optional): The maximum number of records to return. Defaults to `100`.
+            order_by (str, optional): The field to order the records by. Defaults to `None`.
+            order_desc (bool, optional): If `True`, orders the records in descending order. Defaults to `False`.
 
         Returns:
             Sequence[ModelType]: If `unique` is `False`, which returns a list of records or matching records.
@@ -59,6 +63,13 @@ class BaseCRUD(Generic[ModelType]):
                 query = query.where(and_(*conditions))
             query = query.offset(skip).limit(limit)
             result = await self.session.execute(query)
+
+            if order_by:
+                order_column = getattr(self.model, order_by)
+                query = query.order_by(
+                    order_column.desc() if order_desc else order_column.asc()
+                )
+
             if unique:
                 return result.scalars().first()
             return result.scalars().all()
