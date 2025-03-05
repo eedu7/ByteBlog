@@ -10,10 +10,10 @@ from app.exceptions import BadRequestException
 from app.models import User
 from app.schemas.user import PartialUpdateUserRequest, UpdateUserRequest, UserResponse
 
-user_router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
+router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
 
-@user_router.get(
+@router.get(
     "/",
 )
 async def get_all_users(
@@ -22,12 +22,12 @@ async def get_all_users(
     return await user_crud.get_all_users()
 
 
-@user_router.get("/user-profile", response_model=UserResponse)
+@router.get("/user-profile", response_model=UserResponse)
 async def get_current_user(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@user_router.get("/{uuid}")
+@router.get("/{uuid}")
 async def get_user(uuid: UUID, user_crud: UserCRUD = Depends(get_user_crud)):
     user = await user_crud.get_by_uuid(uuid)
     if user:
@@ -41,7 +41,7 @@ async def get_user(uuid: UUID, user_crud: UserCRUD = Depends(get_user_crud)):
         )
 
 
-@user_router.put(
+@router.put(
     "/{uuid}",
 )
 async def update_user_profile(
@@ -61,7 +61,7 @@ async def update_user_profile(
     raise BadRequestException("Error in updating user")
 
 
-@user_router.patch("/{uuid}")
+@router.patch("/{uuid}")
 async def partial_update_user_profile(
     uuid: UUID,
     data: PartialUpdateUserRequest,
@@ -81,7 +81,7 @@ async def partial_update_user_profile(
     raise BadRequestException("Error in updating user")
 
 
-@user_router.delete("/{uuid}")
+@router.delete("/{uuid}")
 async def delete_user(uuid: UUID, user_crud: UserCRUD = Depends(get_user_crud)):
     await user_crud.delete_user(uuid)
     return JSONResponse(

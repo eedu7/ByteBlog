@@ -14,10 +14,10 @@ from app.schemas.auth import (
     ResetPasswordRequest,
 )
 
-auth_router = APIRouter()
+router = APIRouter()
 
 
-@auth_router.post(
+@router.post(
     "/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED
 )
 async def register(
@@ -29,7 +29,7 @@ async def register(
     return {"token": token, "user": user}
 
 
-@auth_router.post("/login", response_model=AuthResponse)
+@router.post("/login", response_model=AuthResponse)
 async def login(data: LoginUserRequest, user_crud: UserCRUD = Depends(get_user_crud)):
     login_data = data.model_dump()
     token = await user_crud.login(**login_data)
@@ -38,16 +38,14 @@ async def login(data: LoginUserRequest, user_crud: UserCRUD = Depends(get_user_c
     return {"token": token, "user": user}
 
 
-@auth_router.post("/logout")
+@router.post("/logout")
 async def logout(data: LogoutUserRequest):
     return JSONResponse(
         status_code=status.HTTP_200_OK, content={"message": "User logout successfully."}
     )
 
 
-@auth_router.post(
-    "/reset-password/{uuid}", dependencies=[Depends(AuthenticationRequired)]
-)
+@router.post("/reset-password/{uuid}", dependencies=[Depends(AuthenticationRequired)])
 async def reset_password(
     uuid: UUID,
     data: ResetPasswordRequest,
