@@ -44,4 +44,21 @@ class PostCRUD(BaseCRUD[Post]):
         except Exception as e:
             raise BadRequestException(f"Exception on fetching post records. {e}")
 
-    async def create_post(self, user: User, attributes: Dict[str, Any]) -> Post: ...
+    async def create_post(self, attributes: Dict[str, Any]) -> Post:
+        """
+        Create a new post in the database.
+
+        Args:
+            attributes (Dict[str, Any]): The attributes of the post to be created.
+
+        Returns:
+            Post: The created post.
+
+        Raises:
+            BadRequestException: If there is an error creating the post.
+        """
+        try:
+            post = await self.create(attributes)
+            return post
+        except Exception as e:
+            raise BadRequestException(f"Exception on creating post. {e}")

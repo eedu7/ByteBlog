@@ -7,7 +7,8 @@ from app.crud import UserCRUD
 from app.dependencies import AuthenticationRequired, CRUDProvider, current_user
 from app.exceptions import BadRequestException
 from app.models import User
-from app.schemas.user import PartialUpdateUserRequest, UpdateUserRequest, UserResponse
+from app.schemas.user import (PartialUpdateUserRequest, UpdateUserRequest,
+                              UserResponse)
 
 router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 

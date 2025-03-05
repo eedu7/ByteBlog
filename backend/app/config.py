@@ -15,7 +15,7 @@ class Config(BaseConfig):
     TEST_POSTGRES_URL: str
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str
-    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15  # 15 minutes
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 15 * 24  # one Day
     JWT_REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
 

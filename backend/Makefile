@@ -40,5 +40,3 @@ format:
 	ruff format .
 	@echo "Running isort..."
 	isort .
-	@echo "Running ruff again..."
-	ruff format .

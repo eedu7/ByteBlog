@@ -5,13 +5,9 @@ from fastapi.responses import JSONResponse
 
 from app.crud import UserCRUD
 from app.dependencies import AuthenticationRequired, CRUDProvider
-from app.schemas.auth import (
-    AuthResponse,
-    LoginUserRequest,
-    LogoutUserRequest,
-    RegisterUserRequest,
-    ResetPasswordRequest,
-)
+from app.schemas.auth import (AuthResponse, LoginUserRequest,
+                              LogoutUserRequest, RegisterUserRequest,
+                              ResetPasswordRequest, UserResponse)
 
 router = APIRouter()
 
@@ -26,7 +22,7 @@ async def register(
     user_data = data.model_dump()
     user = await user_crud.register(**user_data)
     token = await user_crud.login(user_data["email"], user_data["password"])
-    return {"token": token, "user": user}
+    return AuthResponse(token=token, user=UserResponse.model_validate(user))
 
 
 @router.post("/login", response_model=AuthResponse)
@@ -36,8 +32,7 @@ async def login(
     login_data = data.model_dump()
     token = await user_crud.login(**login_data)
     user = await user_crud.get_by_email(login_data.get("email"))
-
-    return {"token": token, "user": user}
+    return AuthResponse(token=token, user=UserResponse.model_validate(user))
 
 
 @router.post("/logout")

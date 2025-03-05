@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import config
 from app.crud.base import BaseCRUD
-from app.exceptions import BadRequestException, NotFoundException, UnauthorizedException
+from app.exceptions import (BadRequestException, NotFoundException,
+                            UnauthorizedException)
 from app.models import User
 from app.schemas.token import Token
 from app.utils import JWTHandler, PasswordHandler

@@ -1,10 +1,5 @@
-from .base import (
-    BadRequestException,
-    CustomException,
-    DatabaseException,
-    NotFoundException,
-    UnauthorizedException,
-)
+from .base import (BadRequestException, CustomException, DatabaseException,
+                   NotFoundException, UnauthorizedException)
 
 __all__ = [
     "CustomException",

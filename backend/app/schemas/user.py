@@ -10,6 +10,9 @@ class UserResponse(BaseModel):
     username: str = Field(..., description="User username", examples=["john.doe"])
     uuid: UUID = Field(..., description="User UUID")
 
+    class Config:
+        from_attributes = True
+
 
 class CurrentUser(BaseModel):
     uuid: UUID | None = Field(None, description="Currently logged user's uuid")
