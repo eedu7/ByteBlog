@@ -60,7 +60,7 @@ class PostCRUD(BaseCRUD[Post]):
             BadRequestException: If there is an error fetching the post record.
         """
         try:
-            post = await self.get_by(filters={"uuid": uuid}, unique=True)
+            post = await self.get_by_uuid(uuid)
             if not post:
                 raise NotFoundException("No post found.")
             return post
