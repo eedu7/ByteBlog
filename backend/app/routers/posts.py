@@ -45,7 +45,11 @@ async def create_post(
     return {"message": "Post created successfully.", "post": post}
 
 
-@router.put("/{uuid}", status_code=status.HTTP_200_OK)
+@router.put(
+    "/{uuid}",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(AuthenticationRequired)],
+)
 async def update_post(
     uuid: UUID,
     data: PostUpdateRequest,
@@ -61,7 +65,11 @@ async def update_post(
     }
 
 
-@router.patch("/{uuid}", status_code=status.HTTP_200_OK)
+@router.patch(
+    "/{uuid}",
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(AuthenticationRequired)],
+)
 async def partial_update_post(
     uuid: UUID,
     data: PostPartialUpdateRequest,
@@ -77,12 +85,20 @@ async def partial_update_post(
     }
 
 
-@router.delete("/{uuid}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete(
+    "/{uuid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(AuthenticationRequired)],
+)
 async def delete_post(uuid: UUID, crud: PostCRUD = Depends(CRUDProvider.get_post_curd)):
     # TODO: Make it soft delete, right now, it will be hard deleted
     await crud.delete_post(uuid)
 
 
-@router.post("/delete/multiple")
+@router.post(
+    "/delete/multiple",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(AuthenticationRequired)],
+)
 async def delete_multiple_post():
     pass
