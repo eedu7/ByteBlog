@@ -1,6 +1,10 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
+# from app.crud.post import PostCRUD
+# from app.dependencies import get_post_curd, AuthenticationRequired, get_current_user
+
+
 router = APIRouter()
 
 
@@ -29,3 +33,7 @@ async def get_posts(skip: int = 0, limit: int = 100):
             ],
         },
     )
+
+
+# @router.post("/")
+# async def create_post(): ...

@@ -1,9 +1,10 @@
-from typing import List
+from typing import Any, Dict, List
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import BaseCRUD
 from app.exceptions import BadRequestException, NotFoundException
-from app.models import Post
+from app.models import Post, User
 
 
 class PostCRUD(BaseCRUD[Post]):
@@ -30,7 +31,7 @@ class PostCRUD(BaseCRUD[Post]):
 
         Returns:
             List[Post]: A list of posts.
-            
+
         Raises:
             NotFoundException: If there are no records.
             BadRequestException: If there is an error fetching the records.
@@ -42,3 +43,5 @@ class PostCRUD(BaseCRUD[Post]):
             return posts
         except Exception as e:
             raise BadRequestException(f"Exception on fetching post records. {e}")
+
+    async def create_post(self, user: User, attributes: Dict[str, Any]) -> Post: ...

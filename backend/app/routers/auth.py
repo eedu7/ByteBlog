@@ -4,8 +4,7 @@ from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
 from app.crud import UserCRUD
-from app.dependencies import get_user_crud
-from app.dependencies.authentication import AuthenticationRequired
+from app.dependencies import AuthenticationRequired, CRUDProvider
 from app.schemas.auth import (
     AuthResponse,
     LoginUserRequest,
@@ -21,7 +20,8 @@ router = APIRouter()
     "/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED
 )
 async def register(
-    data: RegisterUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
+    data: RegisterUserRequest,
+    user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud),
 ):
     user_data = data.model_dump()
     user = await user_crud.register(**user_data)
@@ -30,7 +30,9 @@ async def register(
 
 
 @router.post("/login", response_model=AuthResponse)
-async def login(data: LoginUserRequest, user_crud: UserCRUD = Depends(get_user_crud)):
+async def login(
+    data: LoginUserRequest, user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud)
+):
     login_data = data.model_dump()
     token = await user_crud.login(**login_data)
     user = await user_crud.get_by_email(login_data.get("email"))
@@ -49,7 +51,7 @@ async def logout(data: LogoutUserRequest):
 async def reset_password(
     uuid: UUID,
     data: ResetPasswordRequest,
-    user_crud: UserCRUD = Depends(get_user_crud),
+    user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud),
 ):
     await user_crud.reset_password(uuid, data.old_password, data.new_password)
     return JSONResponse(
