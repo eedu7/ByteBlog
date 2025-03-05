@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
@@ -13,9 +14,7 @@ from app.schemas.user import (PartialUpdateUserRequest, UpdateUserRequest,
 router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
 
-@router.get(
-    "/",
-)
+@router.get("/", response_model=List[UserResponse])
 async def get_all_users(
     skip: int = 0,
     limit: int = 100,
@@ -24,10 +23,9 @@ async def get_all_users(
     return await user_crud.get_all_users()
 
 
-@router.get(
-    "/user-profile", response_model=UserResponse, status_code=status.HTTP_200_OK
-)
+@router.get("/user-profile", status_code=status.HTTP_200_OK)
 async def get_current_user(current_user: User = Depends(current_user.get_current_user)):
+    # TODO: Add the scheme for detail user response
     return current_user
 
 
@@ -37,6 +35,7 @@ async def get_user(
 ):
     user = await user_crud.get_by_uuid(uuid)
     if user:
+        # TODO: added the details user-response
         return user
     else:
         return JSONResponse(
@@ -59,6 +58,7 @@ async def update_user_profile(
     updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
 
     if updated:
+        # TODO: added the details user-response with the message
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -79,6 +79,7 @@ async def partial_update_user_profile(
     updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
 
     if updated:
+        # TODO: added the details user-response with the message
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -94,6 +95,7 @@ async def delete_user(
     uuid: UUID, user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud)
 ):
     await user_crud.delete_user(uuid)
+    # TODO: Added the message in the response content
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={
