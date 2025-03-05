@@ -35,10 +35,6 @@ class PostPartialUpdateRequest:
     )
 
 
-class PostUpdateStatusRequest(BaseModel):
-    status: PostStatus = Field(..., examples=[PostStatus.DRAFT, PostStatus.PUBLISHED])
-
-
 class PostResponse(PostBase):
     uuid: str | UUID = Field(..., description="Post UUID")
 
