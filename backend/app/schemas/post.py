@@ -23,6 +23,22 @@ class PostCreateRequest(PostBase):
     pass
 
 
+class PostUpdateRequest(PostBase):
+    pass
+
+
+class PostPartialUpdateRequest:
+    title: str | None = Field(None, examples=["Title of the post"], max_length=255)
+    body: str | None = Field(None, examples=["This is the content of the post"])
+    status: PostStatus | None = Field(
+        None, examples=[PostStatus.DRAFT, PostStatus.PUBLISHED]
+    )
+
+
+class PostUpdateStatusRequest(BaseModel):
+    status: PostStatus = Field(..., examples=[PostStatus.DRAFT, PostStatus.PUBLISHED])
+
+
 class PostResponse(PostBase):
     uuid: str | UUID = Field(..., description="Post UUID")
 
