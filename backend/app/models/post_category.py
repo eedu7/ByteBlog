@@ -13,13 +13,13 @@ class PostCategory(Base, TimeStampMixin, UserAuditMixin):
     uuid: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), nullable=False, primary_key=True, unique=True, default=uuid4
     )
-    post_id: Mapped[UUID] = mapped_column(
+    post_uuid: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("posts.uuid"), nullable=False
     )
-    category_id: Mapped[UUID] = mapped_column(
+    category_uuid: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("categories.uuid"), nullable=True
     )
-    sub_category_id: Mapped[UUID] = mapped_column(
+    sub_category_uuid: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("sub_categories.uuid"), nullable=True
     )
 

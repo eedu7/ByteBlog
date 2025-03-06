@@ -14,7 +14,7 @@ class SubCategory(Base, UserAuditMixin, TimeStampMixin):
         UUID(as_uuid=True), primary_key=True, unique=True, nullable=False, default=uuid4
     )
     name: Mapped[str] = mapped_column(Unicode(128), nullable=False, unique=True)
-    category_id: Mapped[UUID] = mapped_column(
+    category_uuid: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("categories.uuid"), nullable=True
     )
 
