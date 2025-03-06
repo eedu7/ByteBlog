@@ -31,7 +31,7 @@ class SubCategoryCRUD(BaseCRUD[SubCategory]):
         return sub_categories
 
     async def get_sub_category_by_uuid(self, sub_category_uuid: UUID) -> SubCategory:
-        sub_category =  await self.get_by_uuid(sub_category_uuid)
+        sub_category = await self.get_by_uuid(sub_category_uuid)
 
         if not sub_category:
             raise NotFoundException(f"No sub-category found by the UUID of: {e}")
