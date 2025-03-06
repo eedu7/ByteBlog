@@ -10,14 +10,6 @@ from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
 from app.config import config
 from app.models import Base
 
-
-@pytest.fixture(scope="session")
-def event_loop(request) -> Generator:  # noqa: indirect usage
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
-
-
 @pytest_asyncio.fixture(scope="function")
 async def db_session() -> AsyncSession:
     async_egine = create_async_engine(config.TEST_POSTGRES_URL)
