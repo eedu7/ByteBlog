@@ -1,20 +1,20 @@
 from uuid import UUID
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from app.crud.sub_category import SubCategory, SubCategoryCRUD
+from app.dependencies import CRUDProvider
 
 router = APIRouter()
 
 
 @router.get("/")
-async def get_sub_categories():
-    return {
-        "message": "ok",
-        "sub_categories": [
-            {"name": "sub_category_1"},
-            {"name": "sub_category_2"},
-            {"name": "sub_category_3"},
-        ],
-    }
+async def get_sub_categories(
+    skip: int = 0,
+    limit: int = 100,
+    crud: SubCategoryCRUD = Depends(CRUDProvider.get_sub_category_crud),
+):
+    return await crud.get_all_sub_categories(skip=skip, limit=limit)
 
 
 @router.get("/{uuid}")
