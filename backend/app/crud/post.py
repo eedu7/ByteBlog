@@ -41,7 +41,18 @@ class PostCRUD(BaseCRUD[Post]):
             BadRequestException: If there is an error fetching the records.
         """
         try:
-            posts = await self.get_by(skip=skip, limit=limit)
+            query = (
+                select(Post)
+                .options(
+                    selectinload(Post.post_categories)
+                    .selectinload(PostCategory.sub_categories)
+                    .selectinload(SubCategory.category)
+                )
+                .offset(skip)
+                .limit(limit)
+            )
+            result = await self.session.execute(query)
+            posts = result.mappings().all()
             if not posts:
                 raise NotFoundException("No posts found.")
             return posts
