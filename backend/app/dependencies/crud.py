@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.category import CategoryCRUD
 from app.crud.post import PostCRUD
+from app.crud.sub_category import SubCategoryCRUD
 from app.crud.user import UserCRUD
 from app.database import get_async_session
 
@@ -21,3 +22,9 @@ class CRUDProvider:
         session: AsyncSession = Depends(get_async_session),
     ) -> CategoryCRUD:
         return CategoryCRUD(session=session)
+
+    @staticmethod
+    def get_sub_category_crud(
+        session: AsyncSession = Depends(get_async_session),
+    ) -> SubCategoryCRUD:
+        return SubCategoryCRUD(session=session)
