@@ -93,15 +93,12 @@ class PostCategoryCRUD(BaseCRUD[PostCategory]):
         except Exception as e:
             raise BadRequestException(f"Error retrieving post category: {e}")
 
-    async def create_post_category(
-        self, data: Dict[str, Any], user_uuid: UUID
-    ) -> PostCategory:
+    async def create_post_category(self, data: Dict[str, Any]) -> PostCategory:
         """
         Creates a new post category and associates it with the user who created it.
 
         Args:
             data (Dict[str, Any]): The data for the new post category.
-            user_uuid (UUID): The UUID of the user creating the post category.
 
         Returns:
             PostCategory: The newly created post category object.
@@ -110,13 +107,12 @@ class PostCategoryCRUD(BaseCRUD[PostCategory]):
             BadRequestException: If there is an error creating the post category.
         """
         try:
-            data.update({"created_by": user_uuid})
             return await self.create(data)
         except Exception as e:
             raise BadRequestException(f"Error creating post category: {e}")
 
     async def update_post_category(
-        self, data: Dict[str, any], post_category_uuid: UUID, user_uuid: UUID
+        self, data: Dict[str, any], post_category_uuid: UUID
     ) -> bool:
         """
         Updates an existing post category.
@@ -124,7 +120,6 @@ class PostCategoryCRUD(BaseCRUD[PostCategory]):
         Args:
             data (Dict[str, Any]): The updated data for the post category.
             post_category_uuid (UUID): The UUID of the post category to be updated.
-            user_uuid (UUID): The UUID of the user making the update.
 
         Returns:
             bool: True if the update was successful, False otherwise.
@@ -134,7 +129,6 @@ class PostCategoryCRUD(BaseCRUD[PostCategory]):
             BadRequestException: If there is an error updating the post category.
         """
         try:
-            data.update({"updated_by": user_uuid})
             post_category = await self.get_post_category_by_uuid(post_category_uuid)
             await self.update(post_category, data)
         except NotFoundException:

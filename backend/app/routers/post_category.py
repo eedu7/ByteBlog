@@ -3,9 +3,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, status
 
 from app.crud.post_category import PostCategoryCRUD
-from app.dependencies import (AuthenticationRequired, CRUDProvider,
-                              get_current_user)
-from app.models import User
+from app.dependencies import AuthenticationRequired, CRUDProvider
 from app.schemas.post_category import (CreatePostCategoryRequest,
                                        UpdatePostCategoryRequest)
 
@@ -47,23 +45,20 @@ async def get_post_category(
 )
 async def create_post_category(
     data: CreatePostCategoryRequest,
-    current_user: User = Depends(get_current_user),
     crud: PostCategoryCRUD = Depends(CRUDProvider.get_post_category_crud),
 ):
-    return await crud.create_post_category(data.model_dump(), current_user.uuid)
+    return await crud.create_post_category(data.model_dump())
 
 
 @router.patch("/{uuid}", dependencies=[Depends(AuthenticationRequired)])
 async def update_post_category(
     uuid: UUID,
     data: UpdatePostCategoryRequest,
-    current_user: User = Depends(get_current_user),
     crud: PostCategoryCRUD = Depends(CRUDProvider.get_post_category_crud),
 ):
     return await crud.update_post_category(
         data.model_dump(exclude_none=True),
         post_category_uuid=uuid,
-        user_uuid=current_user.uuid,
     )
 
 

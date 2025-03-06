@@ -2,10 +2,13 @@ from typing import Any, Dict, List
 from uuid import UUID
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 
 from app.crud.base import BaseCRUD
-from app.exceptions import BadRequestException, NotFoundException
-from app.models import Post, User
+from app.exceptions import (BadRequestException, CustomException,
+                            NotFoundException)
+from app.models import Post, PostCategory, SubCategory
 
 
 class PostCRUD(BaseCRUD[Post]):
@@ -60,10 +63,22 @@ class PostCRUD(BaseCRUD[Post]):
             BadRequestException: If there is an error fetching the post record.
         """
         try:
-            post = await self.get_by_uuid(uuid)
+            query = (
+                select(Post)
+                .options(
+                    selectinload(Post.post_categories)
+                    .selectinload(PostCategory.sub_categories)
+                    .selectinload(SubCategory.category)
+                )
+                .filter(Post.uuid == uuid)
+            )
+            result = await self.session.execute(query)
+            post = result.scalar_one_or_none()
             if not post:
                 raise NotFoundException("No post found.")
             return post
+        except CustomException:
+            raise
         except Exception as e:
             raise NotFoundException(f"Exception on fetching post record. {e}")
 

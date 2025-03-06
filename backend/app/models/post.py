@@ -1,7 +1,7 @@
 from uuid import uuid4
 
 from sqlalchemy import UUID, Enum, Text, Unicode
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
 from app.database.mixins import TimeStampMixin, UserAuditMixin
@@ -19,6 +19,8 @@ class Post(Base, UserAuditMixin, TimeStampMixin):
     status: Mapped[PostStatus] = mapped_column(
         Enum(PostStatus, create_type=False), nullable=False, default=PostStatus.DRAFT
     )
+
+    post_categories = relationship("PostCategory", backref="posts")
 
     def __str__(self):
         return f"uuid: {self.uuid}, title: {self.title}"

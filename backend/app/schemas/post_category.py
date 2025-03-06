@@ -7,9 +7,7 @@ from pydantic import BaseModel, Field
 class CreatePostCategoryRequest(BaseModel):
     post_uuid: UUID = Field(..., decsription="Post UUID")
     category_uuid: UUID = Field(..., description="Category UUID")
-    sub_category_uuid: List[UUID] | UUID = Field(
-        ..., description="List of Sub-Categories UUID or a UUID"
-    )
+    sub_category_uuid: UUID = Field(..., description="UUID of the SubCategory")
 
 
 class UpdatePostCategoryRequest(BaseModel):
