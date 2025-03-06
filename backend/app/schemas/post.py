@@ -14,9 +14,7 @@ class PostStatus(StrEnum):
 class PostBase(BaseModel):
     title: str = Field(..., examples=["Title of the post"], max_length=255)
     body: str = Field(..., examples=["This is the content of the post"])
-    status: PostStatus = Field(
-        default=PostStatus.DRAFT, examples=[PostStatus.DRAFT, PostStatus.PUBLISHED]
-    )
+    status: PostStatus = Field(..., examples=[PostStatus.DRAFT, PostStatus.PUBLISHED])
 
 
 class PostCreateRequest(PostBase):

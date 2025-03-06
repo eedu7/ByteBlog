@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import (AsyncSession, async_sessionmaker,
 from app.config import config
 from app.models import Base
 
+
 @pytest_asyncio.fixture(scope="function")
 async def db_session() -> AsyncSession:
     async_egine = create_async_engine(config.TEST_POSTGRES_URL)
