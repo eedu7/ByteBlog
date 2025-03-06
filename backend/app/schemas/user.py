@@ -4,11 +4,15 @@ from pydantic import BaseModel, EmailStr, Field
 
 
 class UserResponse(BaseModel):
+    uuid: UUID = Field(..., description="User UUID")
+    username: str = Field(..., description="User username", examples=["john.doe"])
     email: EmailStr = Field(
         ..., description="User email address", examples=["john.doe@example.com"]
     )
-    username: str = Field(..., description="User username", examples=["john.doe"])
-    uuid: UUID = Field(..., description="User UUID")
+    profile_image: str | None = Field(None, description="User profile image URL")
+
+    class Config:
+        from_attributes = True
 
 
 class CurrentUser(BaseModel):
@@ -19,7 +23,6 @@ class CurrentUser(BaseModel):
 
 
 class UpdateUserRequest(BaseModel):
-    username: str = Field(..., description="User username", examples=["john.doe"])
     full_name: str = Field(..., description="User full name", exampls=["John Doe"])
     bio: str = Field(
         ...,
@@ -28,9 +31,6 @@ class UpdateUserRequest(BaseModel):
 
 
 class PartialUpdateUserRequest(BaseModel):
-    username: str | None = Field(
-        None, description="User username", examples=["john.doe"]
-    )
     full_name: str | None = Field(
         None, description="User full name", exampls=["John Doe"]
     )

@@ -19,7 +19,7 @@ class LogoutUserRequest(BaseModel):
     access_token: str = Field(..., description="Access token of the being log out.")
 
 
-class ForgotPasswordRequest(BaseModel):
+class ResetPasswordRequest(BaseModel):
     old_password: str = Field(
         ..., description="User's old password", examples=["Password@123"]
     )

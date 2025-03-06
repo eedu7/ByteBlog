@@ -1,54 +1,64 @@
+from typing import List
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
 
 from app.crud import UserCRUD
-from app.dependencies import AuthenticationRequired, get_user_crud
-from app.dependencies.current_user import get_current_user
+from app.dependencies import AuthenticationRequired, CRUDProvider, current_user
 from app.exceptions import BadRequestException
 from app.models import User
 from app.schemas.user import (PartialUpdateUserRequest, UpdateUserRequest,
                               UserResponse)
 
-user_router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
+router = APIRouter(dependencies=[Depends(AuthenticationRequired)])
 
 
-@user_router.get(
-    "/",
-)
+@router.get("/", response_model=List[UserResponse])
 async def get_all_users(
-    skip: int = 0, limit: int = 100, user_crud: UserCRUD = Depends(get_user_crud)
+    skip: int = 0,
+    limit: int = 100,
+    user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud),
 ):
     return await user_crud.get_all_users()
 
 
-@user_router.get("/user-profile", response_model=UserResponse)
-async def get_current_user(current_user: User = Depends(get_current_user)):
+@router.get("/user-profile", status_code=status.HTTP_200_OK)
+async def get_current_user(current_user: User = Depends(current_user.get_current_user)):
+    # TODO: Add the scheme for detail user response
     return current_user
 
 
-@user_router.get("/{uuid}")
-async def get_user(uuid: UUID):
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            "message": "Get user by uuid",
-            "api": f"http://localhost:8000/user/{uuid}",
-        },
-    )
+@router.get("/{uuid}")
+async def get_user(
+    uuid: UUID, user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud)
+):
+    user = await user_crud.get_by_uuid(uuid)
+    if user:
+        # TODO: added the details user-response
+        return user
+    else:
+        return JSONResponse(
+            status_code=status.HTTP_404_NOT_FOUND,
+            content={
+                "message": "User not found",
+            },
+        )
 
 
-@user_router.post(
+@router.put(
     "/{uuid}",
 )
 async def update_user_profile(
-    uuid: UUID, data: UpdateUserRequest, user_crud: UserCRUD = Depends(get_user_crud)
+    uuid: UUID,
+    data: UpdateUserRequest,
+    user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud),
 ):
     user_attr = data.model_dump()
     updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
 
     if updated:
+        # TODO: added the details user-response with the message
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -59,16 +69,17 @@ async def update_user_profile(
     raise BadRequestException("Error in updating user")
 
 
-@user_router.put("/{uuid}")
+@router.patch("/{uuid}")
 async def partial_update_user_profile(
     uuid: UUID,
     data: PartialUpdateUserRequest,
-    user_crud: UserCRUD = Depends(get_user_crud),
+    user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud),
 ):
     user_attr = data.model_dump(exclude_none=True)
     updated = await user_crud.update_user_profile(uuid, attributes=user_attr)
 
     if updated:
+        # TODO: added the details user-response with the message
         return JSONResponse(
             status_code=status.HTTP_200_OK,
             content={
@@ -79,9 +90,12 @@ async def partial_update_user_profile(
     raise BadRequestException("Error in updating user")
 
 
-@user_router.delete("/{uuid}")
-async def delete_user(uuid: UUID, user_crud: UserCRUD = Depends(get_user_crud)):
+@router.delete("/{uuid}")
+async def delete_user(
+    uuid: UUID, user_crud: UserCRUD = Depends(CRUDProvider.get_user_crud)
+):
     await user_crud.delete_user(uuid)
+    # TODO: Added the message in the response content
     return JSONResponse(
         status_code=status.HTTP_200_OK,
         content={

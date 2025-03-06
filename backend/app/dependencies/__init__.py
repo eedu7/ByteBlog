@@ -1,4 +1,10 @@
-from .authentication import AuthenticationRequired
-from .crud import get_user_crud
+from app.dependencies.current_user import get_current_user
 
-__all__ = ["AuthenticationRequired", "get_user_crud"]
+from .authentication import AuthenticationRequired
+from .crud import CRUDProvider
+
+__all__ = [
+    "AuthenticationRequired",
+    "CRUDProvider",
+    "get_current_user",
+]
