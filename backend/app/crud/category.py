@@ -4,7 +4,8 @@ from uuid import UUID
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.base import BaseCRUD
-from app.exceptions import BadRequestException, NotFoundException
+from app.exceptions import (BadRequestException, CustomException,
+                            NotFoundException)
 from app.models import Category
 
 
@@ -39,7 +40,12 @@ class CategoryCRUD(BaseCRUD[Category]):
             BadRequestException: If an error occurs while retrieving categories.
         """
         try:
-            return await self.get_by(skip=skip, limit=limit)
+            categories = await self.get_by(skip=skip, limit=limit)
+            if not categories:
+                raise NotFoundException("No categories found.")
+            return categories
+        except CustomException:
+            raise
         except Exception as e:
             raise BadRequestException(f"Failed to fetch categories: {e}")
 
