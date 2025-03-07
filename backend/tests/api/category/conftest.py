@@ -46,3 +46,8 @@ def mock_category(
 @pytest.fixture
 def mock_sub_category_data(mock_category: Dict[str, str]) -> Dict[str, str]:
     return {"category_uuid": mock_category["uuid"], "name": "Java"}
+
+
+@pytest.fixture
+def mock_update_sub_category_data(mock_category: Dict[str, str]) -> Dict[str, str]:
+    return {"name": "Python"}
