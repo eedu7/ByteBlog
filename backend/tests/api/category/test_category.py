@@ -1,12 +1,9 @@
-import asyncio
 from http import HTTPStatus
-from typing import Any, Dict
+from typing import Dict
 from uuid import uuid4
 
 import pytest
 from httpx import AsyncClient
-
-from tests.utils.users import create_fake_user
 
 API_ENDPOINT: str = "/category"
 

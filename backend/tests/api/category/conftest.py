@@ -6,7 +6,7 @@ from httpx import AsyncClient
 
 from tests.utils.users import create_fake_user
 
-API_ENDPOINT: str = "/category"
+CATEGORY_API_ENDPOINT: str = "/category"
 
 
 @pytest.fixture(scope="function")
@@ -21,12 +21,12 @@ def auth_headers(client: AsyncClient) -> Dict[str, str]:
 
 @pytest.fixture
 def mock_category_data() -> Dict[str, str]:
-    return {"name": "JavaScript"}
+    return {"name": "Programming"}
 
 
 @pytest.fixture
 def mock_update_category_data() -> Dict[str, str]:
-    return {"name": "Python"}
+    return {"name": "Web Dev"}
 
 
 @pytest.fixture(scope="function")
@@ -37,7 +37,12 @@ def mock_category(
 ) -> Dict[str, Any]:
     loop = asyncio.get_event_loop()
     request = client.post(
-        f"{API_ENDPOINT}/", json=mock_category_data, headers=auth_headers
+        f"{CATEGORY_API_ENDPOINT}/", json=mock_category_data, headers=auth_headers
     )
     response = loop.run_until_complete(request)
     return response.json()
+
+
+@pytest.fixture
+def mock_sub_category_data(mock_category: Dict[str, str]) -> Dict[str, str]:
+    return {"category_uuid": mock_category["uuid"], "name": "Java"}
