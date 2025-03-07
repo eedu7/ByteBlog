@@ -149,5 +149,7 @@ class PostCRUD(BaseCRUD[Post]):
         try:
             post = await self.get_post_by_uuid(uuid)
             await self.delete(post)
+        except CustomException:
+            raise
         except Exception as e:
             raise BadRequestException(f"Exception on deleting post. {e}")
